@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :witnesses do
     get :assign, on: :member
     get :unassign, on: :member
-    #resources :comments
+    resources :comments
     get '/witness_years', :to => 'witness_years#show'
 
   end

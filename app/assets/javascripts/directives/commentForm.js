@@ -1,19 +1,19 @@
 app.directive('commentForm', function () {
   return {
   	scope: { 
-  		obj: '=',
       resource: '@',
-      userId: '@',
+      entityId: '@',
       callback: '='
   	},
   	controller: ['$http', function($http) {
       var self = this;
       this.text = '';
   		this.submit = function() {
-        $http.post('/'+ this.resource + '/' + this.obj.id + '/comments', {
+        $http.post('/'+ this.resource + '/' + this.entityId + '/comments.json', {
           comment: {
             content: this.text,
-            user_id: this.userId
+            entity_id: this.entityId,
+            entity_type: this.resource
           }
         }).then(function(response) {
           self.callback(response);

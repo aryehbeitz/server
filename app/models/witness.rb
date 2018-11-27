@@ -8,4 +8,8 @@ class Witness < ApplicationRecord
   def direct_manager_json
     Staff.get_managers_json('witness',self.id)
   end
+
+  def comments
+    Comment.get_all_json(self.id, 'witnesses')
+  end
 end

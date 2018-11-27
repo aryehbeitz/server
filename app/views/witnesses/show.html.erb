@@ -1,5 +1,5 @@
 <div id="witness-show" class="row profile" ng-controller="WitnessShowController"
-      ng-init="init(<%= @witness.to_json(:include => [:user, :country_region_city, :salon => {:include => [:user]}]) %>)">
+      ng-init="init(<%= @witness.to_json(:include => [:user, :country_region_city, :salon => {:include => [:user]}], :methods => [:comments]) %>)">
 
   <div class="col-xs-12">
     <h1><%= t '.title' %></h1>
@@ -211,7 +211,7 @@
       </div>
 
       <div class="col-xs-12 panel">
-          <div comment-form obj="witness" resource="witnesses"
+          <div comment-form entity-id="{{witness.id}}" resource="witnesses"
                user-id="<%= current_user.id %>"
                callback="commentCallback"></div>
         </div>
