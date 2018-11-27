@@ -1,5 +1,5 @@
 <div id="witness-show" class="row profile" ng-controller="WitnessShowController"
-      ng-init="init(<%= @witness.to_json(:include => [:city, { host: { :include => :user } }, { comments: { :include => :user } }]) %>)">
+      ng-init="init(<%= @witness.to_json(:include => [:user, :country_region_city, :salon => {:include => [:user]}]) %>)">
 
   <div class="col-xs-12">
     <h1><%= t '.title' %></h1>
@@ -11,26 +11,31 @@
         <div class="panel-heading">
            <div class="info-title"><%= t 'profile.personal_details' %></div>
            <div>
-            <a href="/<%=I18n.locale.to_s%>/witnesses/{{ witness.id }}/edit">
+            <a href="/<%=I18n.locale.to_s%>/witnesses/{{ witness.user.id }}/edit">
               <%= t 'profile.labels.edit' %>
             </a>
            </div>
         </div>
         <div class="panel-body">
 
+          <div ng-show="witness.archived" class="field-group">
+            <div style="color: red" class="info-label">ארכיב</div>
+            <div style="color: red">{{ formatBool(witness.archived) }}</div>
+          </div>
+
           <div class="field-group">
             <div class="info-label"><%= t 'profile.labels.name' %></div>
-            <div>{{ witness.full_name }}</div>
+            <div>{{ witness.user.full_name }}</div>
           </div>
 
           <div class="field-group">
             <div class="info-label"><%= t 'profile.labels.phone' %></div>
-            <div>{{ witness.phone }}<br>{{ witness.additional_phone }}</div>
+            <div>{{ witness.user.phone }}<br>{{ witness.additional_phone }}</div>
           </div>
 
           <div class="field-group">
             <div class="info-label"><%= t 'profile.labels.email' %></div>
-            <div>{{ witness.email }}</div>
+            <div>{{ witness.user.email || 'אין' }}</div>
           </div>
 
           <div class="field-group">
@@ -40,7 +45,7 @@
 
           <div class="field-group">
             <div class="info-label">עיר</div>
-            <div>{{ witness.city.name }}</div>
+            <div>{{ witness.country_region_city.city_name }}</div>
           </div>
         </div>
 
@@ -83,33 +88,10 @@
           </div>
 
           <div class="field-group">
-            <div class="info-label">זמינות</div>
-            <div>
-              <span ng-if="witness.can_morning" class="margin-left-5">בוקר</span>
-              <span ng-if="witness.can_afternoon" class="margin-left-5">צהריים</span>
-              <span ng-if="witness.can_evening" class="margin-left-5">ערב</span>
-            </div>
-          </div>
-
-          <div class="field-group">
             <div class="info-label">אוכלוסיה מיוחדת</div>
             <div>{{ formatBool(witness.special_population) }}</div>
           </div>
-        </div>
 
-        <div class="panel-body">
-          <div class="field-group">
-            <div class="info-label"><%= t "shared.available_days" %></div>
-            <span ng-if="witness.available_day1" class="margin-left-5"> <%= t "shared.available_day1" %></span>
-            <span ng-if="witness.available_day2" class="margin-left-5"> <%= t "shared.available_day2" %></span>
-            <span ng-if="witness.available_day3" class="margin-left-5"> <%= t "shared.available_day3" %></span>
-            <span ng-if="witness.available_day4" class="margin-left-5"> <%= t "shared.available_day4" %></span>
-            <span ng-if="witness.available_day5" class="margin-left-5"> <%= t "shared.available_day5" %></span>
-            <span ng-if="witness.available_day6" class="margin-left-5"> <%= t "shared.available_day6" %></span>
-          </div>
-        </div>
-
-        <div class="panel-body">
           <div class="field-group">
             <div class="info-label">הערות</div>
             <div>{{ witness.free_text }}</div>
@@ -118,69 +100,64 @@
       </div>
     </div>
 
-    <% if current_user && (current_user.meta.is_a?(Manager) || current_user.admin?) %>
       <div class="col-xs-12">
         <div class="panel panel-default">
           <div class="panel-heading">
             <div class="info-title">
-              <%= t 'hosts.show.manager_actions' %>
+              <%= t 'witnesses.show.manager_actions' %>
             </div>
           </div>
+
+          <div class="panel-body">
+          <div class="field-group">
+            <div class="info-label">זמינות</div>
+            <div>
+              <span ng-if="witness.can_morning" class="margin-left-5">בוקר</span>
+              <span ng-if="witness.can_afternoon" class="margin-left-5">צהריים</span>
+              <span ng-if="witness.can_evening" class="margin-left-5">ערב</span>
+            </div>
+          </div>
+
+            <div class="field-group">
+              <div class="info-label"><%= t "shared.available_days" %></div>
+              <span ng-if="witness.available_day1" class="margin-left-5"> <%= t "shared.available_day1" %></span>
+              <span ng-if="witness.available_day2" class="margin-left-5"> <%= t "shared.available_day2" %></span>
+              <span ng-if="witness.available_day3" class="margin-left-5"> <%= t "shared.available_day3" %></span>
+              <span ng-if="witness.available_day4" class="margin-left-5"> <%= t "shared.available_day4" %></span>
+              <span ng-if="witness.available_day5" class="margin-left-5"> <%= t "shared.available_day5" %></span>
+              <span ng-if="witness.available_day6" class="margin-left-5"> <%= t "shared.available_day6" %></span>
+            </div>
+          </div>
+
           <div class="panel-body">
 
             <!-- Host -->
             <div class="field-group">
               <div class="info-label"><%= t 'profile.labels.host' %></div>
-              <div ng-if="witness.host" class="cancel-assignment">
-                <a ng-href="/<%=I18n.locale.to_s%>/hosts/{{witness.host.id}}">{{ witness.host.user.full_name }}</a>&nbsp;
+              <div ng-if="witness.salon && witness.salon.length > 0" class="cancel-assignment">
+                <div ng-repeat="s in witness.salon">
+                <a ng-href="/<%=I18n.locale.to_s%>/salons/{{s.id}}">{{ s.user.full_name }}</a>&nbsp;
                 <button class="btn btn-warning">
-                  <%= link_to 'בטל ציוות', unassign_witness_path(@witness), :confirm => 'בטוח בטוח? למען הסדר הטוב, לאחר ביטול הציוות אנא הוספ/י הערה בדף זה המפרטת את סיבת הביטול.' %>
+                  <a confirm="בטוח בטוח? למען הסדר הטוב, לאחר ביטול הציוות אנא הוספ/י הערה בדף זה המפרטת את סיבת הביטול."
+                     href="/salons/{{s.id}}/unassign">בטל ציוות</a>
                 </button>
+                </div>
               </div>
-              <div ng-if="!witness.host && !witness.external_assignment && !witness.archived && !witness.need_to_followup">
-                <%#= t('profile.assign_host') %>
-                <%= link_to t('profile.assign_host'), assign_witness_path(@witness) %>
+              <div ng-if="witness.salon && witness.salon.length <= 0">
+                לא משובץ
               </div>
-              <div ng-if="!witness.host && witness.external_assignment">
+              <div ng-if="!witness.external_assignment && !witness.archived && !witness.need_to_followup">
+                <%= link_to t('profile.assign_host'), assign_witness_path(@witness.user) %>
+              </div>
+              <div ng-if="witness.external_assignment">
                 <%= t('profile.labels.external_assignment_explain') %>
                 <!-- צוות מחוץ למערכת -->
               </div>
             </div>
-
-            <!-- Concept  - cancelled -->
-            <% if current_user && current_user.meta.is_a?(Manager) && false%>
-              <div class="field-group">
-                <div class="info-label"><%= t 'profile.labels.concept' %></div>
-                <div>
-                  <select class="form-control"
-                          ng-model="witness.concept"
-                          ng-options="o.v as o.n for o in [
-                            { n: '<%= t 'shared.concept.religious_and_secular' %>', v: 'religious_and_secular' },
-                            { n: '<%= t 'shared.concept.vetrans' %>', v: 'vetrans' },
-                            { n: '<%= t 'shared.concept.eastern' %>', v: 'eastern' }
-                          ]">
-                  <option value=""><%= t 'shared.select' %></option>
-                </select>
-                </div>
-              </div>
-            <% end %>
-
-            <!-- Type -->
-<!--             <div class="form-group ">
-                <label for="witness_type" >
-                  <%= t 'shared.type' %>
-                </label>
-                <select class="form-control" id="witness_type"
-                        ng-model="witness.witness_type"
-                        ng-options="o.v as o.n for o in witnessTypes">
-                  <option value=""><%= t 'shared.select' %></option>
-                </select>
-            </div> -->
           </div>
 
           <div class="panel-body">
             <!-- External assignment-->
-            <% if current_user && current_user.any_admin? %>
               <div class="field-group">
                 <div class="info-label">
                   <%= t 'profile.labels.external_assignment' %><br>
@@ -216,7 +193,6 @@
                   </div>
                 </div>
               </div>
-            <% end %>
           </div>
         </div>
       </div>
@@ -239,12 +215,9 @@
                user-id="<%= current_user.id %>"
                callback="commentCallback"></div>
         </div>
-    <% end %>
   </div>
 
-  <% if current_user && current_user.meta.is_a?(Manager) %>
     <div class="col-xs-4">
       <div comment-list comments="witness.comments"/></div>
     </div>
-  <% end %>
 </div>

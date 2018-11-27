@@ -5,7 +5,8 @@ app.controller('WitnessAssignController', ['$scope', '$http', '$uibModal',
 	$scope.filter = {};
   $scope.success = false;
 
-  $scope.init = function(witness, hosts, cities, cityId) {
+  $scope.init = function(witness, salons) {
+      $scope.salons = salons;
 
     $scope.pagination = {
       currentPage: 1
@@ -93,13 +94,13 @@ app.controller('WitnessAssignModalController', ['$scope', '$http','$uibModalInst
   $scope.createAssignment = function() {
     $scope.error = false;
     
-    $http.put('/witnesses/' + $scope.witness.id + '.json', {
-      witness: {
-        host_id: $scope.host.id
+    $http.put('/salons/' + $scope.host.id + '.json', {
+      salon: {
+          witness_id: $scope.witness.id
       }
     }).then(function(response) {
-      if(response.status === 201 && response.data.host_id) {
-        window.location = '/' + document.getElementById('locale').className + '/hosts/' + response.data.host_id;
+      if(response.status === 200) {
+        window.location = '/' + document.getElementById('locale').className + '/salons/' + host.id;
       } else {
         $scope.error = true;
       }

@@ -1,0 +1,22 @@
+<%= form_with(model: salon, local: true) do |form| %>
+  <% if salon.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(salon.errors.count, "error") %> prohibited this salon from being saved:</h2>
+
+      <ul>
+      <% salon.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :street %>
+    <%= form.text_area :street %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

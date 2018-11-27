@@ -57,7 +57,7 @@ app.factory('activeUsers', ['$http', 'activeDialog',
         if (typeof optionalUrl !== 'undefined') {
           window.location = optionalUrl;
         } else {
-          window.location = '/' + locale + '/' + data.meta_type.toLowerCase() + 's/' + data.meta_id;
+          window.location = '/' + locale + '/users/' + data.id;
         }
       }
     }

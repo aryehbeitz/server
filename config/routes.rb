@@ -1,57 +1,35 @@
-ZikaronBasalon::Application.routes.draw do
-  post 'webhook', :to => 'webhooks#webhook'
+Rails.application.routes.draw do
 
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/  do
+  scope "(:year)", year: /#{[2019,2018,2017,2016,2015].join("|")}/  do
+  resources :country_region_cities
 
-    # Add support for Mailpreview
-    if Rails.env.development?
-      mount MailPreview => 'mail_view'
-    end
+  resources :staffs
+  resources :witnesses do
+    get :assign, on: :member
+    get :unassign, on: :member
+    #resources :comments
+    get '/witness_years', :to => 'witness_years#show'
 
-    get 'my-profile', :to => 'users#profile'
+  end
 
-    devise_for :users, controllers: { registrations: "registrations" } do
-      get '/users/sign_out' => 'devise/sessions#destroy'
-    end
+  resources :witness_salons
+  resources :user_salons
+  resources :salons
+  resource :witness_year
+  devise_for :users, controllers: { registrations: "registrations" }
+  resources :users
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-    resources :managers do
-      post :remove_city, on: :member
-      get :export_hosts, on: :member
-      get :export_witnesses, on: :member
-      get :export_guests, on: :member
-    end
+  get 'signup', :to => 'users#new', as: :signup
+  get "pages/home", :to => 'pages#home', as: :host_search
 
+  resources :salon do
+    resources :comments
+  end
 
-    resources :regions do
-      member do
-        put :add_city
-        get :remove_city
-      end
-    end
-
-    resources :guests
-    resources :sessions, only: [:new, :create]
-    resources :users, only: [:new] do
-      put :assignrole, on: :member
-    end
-    resources :witnesses do
-      get :assign, on: :member
-      get :unassign, on: :member
-      resources :comments
-    end
-    
-    match 'signup', :to => 'users#new', as: :signup
-    
-    resources :hosts do
-      resources :comments
-    end
-
-    resources :invites, only: [:create, :update, :destroy]
-
-    match "pages/home", :to => 'pages#home', as: :host_search
-    match "pages/host_register_link", :to => 'pages#host_register_link', as: :host_register_link
-    get "pages/privacy_policy"
-    get "pages/welcome"
-    root :to => 'pages#welcome'
+  get "pages/salon_register_link", :to => 'pages#salon_register_link', as: :salon_register_link
+  root 'pages#welcome'
+  end
   end
 end

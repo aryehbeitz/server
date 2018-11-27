@@ -30,6 +30,18 @@
 //= require angular-spinner.min
 //= require ui-select
 //= require module
+//= require users.new
+//= require hosts.edit
+//= require hosts.index
+//= require pages.home
+//= require guests.show
+//= require hosts.show
+//= require managers.show
+//= require witnesses.new
+//= require sessions.new
+//= require managers.index
+//= require witnesses.show
+//= require witnesses.assign
 //= require_self
 
 $(function() {

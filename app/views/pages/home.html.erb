@@ -11,8 +11,8 @@
     <% if true %>
     <div class="col-xs-12" ng-controller="HomePageController"
           ng-init="init(
-            <%= @hosts.to_json(:include => [{ :user => { :methods => [:first_name] } }, :city, :country], :methods => [:available_places, :converted_time]) %>, 
-            <%= [] %>, <%= @regions.to_json %>, <%= @total_items %>,
+            <%= @salons.to_json(:include => [:country_region_city, { :user => { :methods => [:first_name] } } ], :methods => [:available_places, :converted_time]) %>,
+             <%= @total_items %>,
             <%= current_user_json %>, <%= @countries.to_json %>
           )">
 
@@ -22,16 +22,16 @@
         <span class="margin-left-10"><%= t 'shared.filter_by' %>:</span>
 
         <div class="form-group">
-          <select class="form-control city-select" ng-model="search.country_id"
-                  ng-options="o.id as o.printable_name for o in countries | orderBy:'printable_name'"
+          <select class="form-control city-select" ng-model="search.country"
+                  ng-options="o.country_name for o in countries | orderBy:'country_name'"
                   ng-change="filter()">
             <option value=""><%= t 'shared.country' %></option>
           </select>
         </div>
 
         <div class="form-group">
-          <select class="form-control city-select" ng-model="search.region_id"
-                  ng-options="o.id as o.name for o in regions | orderBy:'name'"
+          <select class="form-control city-select" ng-model="search.region"
+                  ng-options="o.region_name for o in search.country.regions | orderBy:'region_name'"
                   ng-change="filter()">
             <option value=""><%= t 'shared.region' %></option>
           </select>
@@ -140,8 +140,9 @@
         </thead>
         <tbody>
           <tr ng-repeat="host in hosts">
+
             <td>{{ host.user.first_name }}</td>
-            <td>{{ formatCityDisplay(host) }}</td>
+            <td>{{ host.country_region_city.city_name_he }}</td>
             <td>{{ formatAddressDisplay(host.address) }}</td>
             <td class="hidden-xs">{{ formatTableDate(host.event_date) }}</td>
             <td class="hidden-xs">{{ formatLanguage(host.event_language) }}</td>

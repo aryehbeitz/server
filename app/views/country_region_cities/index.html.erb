@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Country Region Cities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Country name</th>
+      <th>Country iso</th>
+      <th>Country printable name</th>
+      <th>Country iso3</th>
+      <th>Country numcode</th>
+      <th>Region name</th>
+      <th>Region</th>
+      <th>City name en</th>
+      <th>City name he</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @country_region_cities.each do |country_region_city| %>
+      <tr>
+        <td><%= country_region_city.country_name %></td>
+        <td><%= country_region_city.country_iso %></td>
+        <td><%= country_region_city.country_printable_name %></td>
+        <td><%= country_region_city.country_iso3 %></td>
+        <td><%= country_region_city.country_numcode %></td>
+        <td><%= country_region_city.region_name %></td>
+        <td><%= country_region_city.region_id %></td>
+        <td><%= country_region_city.city_name_en %></td>
+        <td><%= country_region_city.city_name_he %></td>
+        <td><%= link_to 'Show', country_region_city %></td>
+        <td><%= link_to 'Edit', edit_country_region_city_path(country_region_city) %></td>
+        <td><%= link_to 'Destroy', country_region_city, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Country Region City', new_country_region_city_path %>

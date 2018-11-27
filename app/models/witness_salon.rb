@@ -1,0 +1,2 @@
+class WitnessSalon < ApplicationRecord
+end

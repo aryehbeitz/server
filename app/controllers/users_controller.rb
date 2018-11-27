@@ -4,6 +4,14 @@ class UsersController < ApplicationController
 		@type = params[:type]
 	end
 
+	def show
+		@user = User.find(params[:id])
+		@user_salons = @user.user_salon.all
+		@salons = @user.salon.all
+	end
+
+
+
 	def assignrole
 		if !params[:changerole].nil?
 			user_role = RoleChanger.new(params[:id])
@@ -26,4 +34,5 @@ class UsersController < ApplicationController
 			redirect_to polymorphic_path(current_user.meta)
 		end
 	end
+	
 end

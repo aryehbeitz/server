@@ -1,23 +1,23 @@
 module ApplicationHelper
-	def inline_svg(path)
+  def inline_svg(path)
     file = File.open("app/assets/images/#{path}", "rb")
     raw file.read
   end
 
   def get_guests_svg(allowed)
-  	if allowed
-  		"guests_allowed.svg"
-  	else
-  		"guests_not_allowed.svg"
-  	end
+    if allowed
+      "guests_allowed.svg"
+    else
+      "guests_not_allowed.svg"
+    end
   end
 
   def strangers_class(allowed)
-  	if allowed
-  		"allowed"
-  	else
-  		"not_allowed"
-  	end
+    if allowed
+      "allowed"
+    else
+      "not_allowed"
+    end
   end
 
   def date_format(date)
@@ -25,7 +25,7 @@ module ApplicationHelper
   end
 
   def profile_label(user)
-    current_user.meta.is_a?(Manager) ? t('.manager_profile') : t('.profile')
+    t('.profile')
   end
 
   def next_locale(locale)
@@ -80,10 +80,12 @@ module ApplicationHelper
   end
 
   def current_user_json
-    if current_user && current_user.guest?
-      return current_user.to_json(:include => { meta: { :include => :invites } })
-    end
+    #if current_user && current_user.guest?
+    #  return current_user.to_json(:include => { meta: { :include => :invites } })
+    #end
 
-    current_user ? current_user.to_json(:include => :meta) : current_user.to_json
+    #current_user ? current_user.to_json(:include => :meta) : current_user.to_json
+
+    return current_user.to_json(include: :user_salon)
   end
 end

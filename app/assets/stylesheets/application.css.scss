@@ -10,6 +10,9 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require hosts.css
+ *= require invites.css
+ *= require pages.css
  * require jquery.ui.datepicker
  * require jquery.ui.autocomplete
  /*
@@ -55,10 +58,6 @@ ul {
 	&.errors {
 		color: red;
 	}
-}
-
-label {
-	color: #a3a3a3;
 }
 
 .help-block {

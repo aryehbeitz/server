@@ -19,17 +19,10 @@ app.controller('RequestInviteController', ['$scope', '$http', '$uibModalInstance
 
 	if (!$scope.currentUser)  {
 		$scope.view = 'register';
-	} else {
-		if ($scope.currentUser && $scope.currentUser.meta.invites && $scope.currentUser.meta.invites.length > 0) {
-      $scope.view = 'error'; //this causes the popup to jump, (see _request_invite_modal.html.erb)
-		}
-    else if ($scope.currentUser && $scope.currentUser.meta_type !== 'Guest') {
-      $scope.view = 'error_host';
-    }
+	}
     else {
 			$scope.view = 'request';
 		}
-	}
 
 	$scope.toggleView = function(view) {
 		$scope.view = view;
@@ -44,10 +37,10 @@ app.controller('RequestInviteController', ['$scope', '$http', '$uibModalInstance
   };
 
   $scope.sendRequest = function() {
-  	$http.post('/invites', {
-  		invite: {
-  			host_id: $scope.host.id,
-  			plus_ones: $scope.invite.plusOnes
+  	$http.post('/user_salons', {
+        user_salon: {
+  			salon_id: $scope.host.id,
+            guest_amount: parseInt($scope.invite.plusOnes)+1
   		},
   		locale: document.getElementById('locale').className
   	}).then(function(response) {

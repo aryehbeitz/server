@@ -2,10 +2,10 @@ app.controller('ManagerIndexController', ['$scope','$http', function($scope, $ht
   $scope.managers = [];
   $scope.city;
 
-  $scope.init = function(managers, citiesWithoutManager) {
+  $scope.init = function(managers, countries) {
     $scope.managers = managers;
-    $scope.citiesWithoutManager = citiesWithoutManager;
-    $scope.initCityInput();
+    $scope.countries = countries;
+    //$scope.initCityInput();
   }
 
   $scope.createManager = function() {

@@ -3,7 +3,9 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= content_for?(:title) ? yield(:title) : "זכרון בסלון" %></title>
-    <%= favicon_link_tag %>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%#= favicon_link_tag %>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -20,7 +22,7 @@
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular-sanitize.min.js"></script> -->
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap.min.js"></script> -->
     <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.1.2/ui-bootstrap-tpls.min.js"></script> -->
-    <%= javascript_include_tag "application", "#{controller_name}.#{action_name}" if ZikaronBasalon::Application.assets.find_asset("#{controller.controller_name}.#{action_name}.js") %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
     <!-- prod: AIzaSyDSOmyr4VMv2qvWLO12OuYqH7o-67DRANk -->
     <!-- staging: AIzaSyDJ1u3XlTGQDKn6dR3vOH5bVswXBmaGiLM -->
     <!-- staging: AIzaSyBNwaldeJS-x1mLdEORdtF9wRmYVwTb8V8 -->
@@ -38,15 +40,14 @@
       <!-- <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"> -->
     <% end %>
     <!-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.css"> -->
-    <%= stylesheet_link_tag "application" %>
-    <%= stylesheet_link_tag params[:controller] if ZikaronBasalon::Application.assets.find_asset("#{params[:controller]}") %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%#= stylesheet_link_tag params[:controller] if ZikaronBasalon::Application.assets.find_asset("#{params[:controller]}") %>
 
-    <%= csrf_meta_tag %>
     <%= yield(:head) %>
     <meta property="og:image" content="http://static.wixstatic.com/media/21e365_91defaf889494d6ea5cad65059ba650c.jpg">
     <meta property="og:url" content="http://zikaronbasalon.herokuapp.com">
     <meta property="og:description" content="בין הקדושה של הטקסים הממלכתיים וההדחקה המוחלטת, זכרון בסלון מציע דרך אחת נוספת ﻿ זכרון בסלון נולד מתוך ההבנה שהזיקה שלנו, הדור השלישי, ליום הזכרון לשואה ולגבורה - הולכת ונחלשת. הפרויקט נועד לייצר דרך נוספת לציין את היום הזה, אשר תאפשר חיבור שונ">
-    
+
     <% if false %>
 
       <!--Start of Tawk.to Script-->
@@ -67,6 +68,8 @@
 
   </head>
   <body class="<%= I18n.locale %>">
+    <p class="notice hidden"><%= notice %></p>
+  <p class="alert hidden"><%= alert %></p>
     <div id="locale" class="<%= I18n.locale %>"></div>
 
     <%= render "layouts/header" %>

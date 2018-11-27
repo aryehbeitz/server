@@ -1,4 +1,36 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# The following keys must be escaped otherwise they will not be retrieved by
+# the default I18n backend:
+#
+# true, false, on, off, yes, no
+#
+# Instead, surround them with single quotes.
+#
+# en:
+#   'true': 'foo'
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
 en:
+  hello: "Hello world"
   activerecord:
     errors:
       messages:
@@ -124,11 +156,11 @@ en:
     manager: "manager"
     reset_password: "Reset password"
     address: "address"
-    free_text: "comments"
+    inside_text: "comments"
     assign: "assign"
     street: "Street"
     available_spaces: "Open places"
-    free_text: "Comments"
+    inside_text: "Comments"
     location: "Location"
     accessibility: "Accessibility"
     estimated_time: "Estimated time"
@@ -254,7 +286,7 @@ en:
       max_guests_help_block: "We mean the number of guests that could request to join your Zikaron BaSalon through our site. You can invite your friends personally once the registration process is completed."
       public_text: "Is there anything your guests should know?"
       public_text_help_block: "i.e Should the guests bring something with them? Will the event focus on a specific aspect? Who will be the participants? You can edit it later."
-      free_text: "Is there anything else we need to know?"
+      inside_text: "Is there anything else we need to know?"
       finish: "Complete registration"
       thanks_for_joining:  "You have joined thousands of Zikaron BaSalon hosts worldwide!"
       thanks_for_joining2:  ""
@@ -281,7 +313,7 @@ en:
         salon_type: "Open/closed salon"
         open_places: "How many guests do you want to invite?"
         public_text: "Is there anything you want your guests to know?"
-        free_text: "My Notes"
+        inside_text: "My Notes"
         edit: "Edit"
         contacted: "Was contacted"
         preparation_evening: "Was at Evening Preparation"
@@ -311,7 +343,7 @@ en:
       walk_up_stairs: "יכול לעלות מדרגות"
       special_needs: "צרכי נגישות מיוחדים"
       seminar_required: "צריך סמינר"
-      free_text: "עוד משהו שאנחנו צריכים לדעת"
+      inside_text: "עוד משהו שאנחנו צריכים לדעת"
       special_population: "אוכלוסיה מיוחדת"
     show:
       title: "פרופיל איש עדות"
@@ -335,7 +367,7 @@ en:
       salon_type: "סוג סלון"
       open_places: "מקומות פנויים"
       public_text: "הערות למתארחים"
-      free_text: "הערות לצוות"
+      inside_text: "הערות לצוות"
       edit: "עריכה"
       contacted: "נוצר קשר ראשוני"
       survivor_needed: "צריך עד"
@@ -353,7 +385,7 @@ en:
     personal_details: "פרטים אישיים"
     evening_details: "פרטים על הערב"
     manager_actions: "פעולות מוביל קהילה"
-    assign_host: "צוות למארח"
+    assign_host: "שובץ למארח"
     updated: "הפרטים עודכנו בהצלחה"
     external_assignment_text: "איש העדות לא מעוניין להשתתף השנה"
 

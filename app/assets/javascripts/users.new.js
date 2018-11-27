@@ -22,10 +22,10 @@ app.controller('UserSignupController', ['$scope', '$http', function($scope, $htt
 					email: $scope.form.email,
 					password: $scope.form.password,
 					password_confirmation: $scope.form.passwordConfirmation,
+                    phone: $scope.form.phone,
 					full_name: $scope.form.fullName,
 					type: $scope.form.type
-				},
-				phone: $scope.form.phone
+				}
 			}).then(function(response) {
 				if(response.data && response.data.success) {
 					window.location = '/' + document.getElementById('locale').className + response.data.redirect_url

@@ -1,32 +1,15 @@
-<div class="col-xs-12" id="witness-new-form" ng-controller="WitnessNewController" ng-init="init(<%= @witness.to_json(:methods => [:city_name]) %>)">
+<div class="col-xs-12" id="witness-new-form" ng-controller="WitnessNewController" ng-init="init(<%= @witness.to_json(:include => [:user]) %>, <%= @countries.to_json %>)">
 	
 	<h1><%= t '.title' %></h1>
 
   <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.msg}}</uib-alert>
 
-  <form name="form" ng-class="{true: 'error'}[submitted]" novalidate>
+  <form name="stepOne" novalidate>
     <div class="form-group">
       <label for="full_name"><%= t 'users.new.labels.full_name' %></label>
       <input type="text" class="form-control"
              id="full_name"
-             ng-model="witness.full_name"
-             required>
-    </div>
-
-    <div class="form-group">
-      <label for="city_name">עיר/יישוב</label>
-      <input type="text" class="form-control"
-             id="city_name"
-             ng-model="witness.city_name"
-             ng-blur="onCityNameBlur()"
-             required>
-    </div>
-
-    <div class="form-group">
-      <label for="address">כתובת</label>
-      <input type="text" class="form-control"
-             id="address"
-             ng-model="witness.address"
+             ng-model="user.full_name"
              required>
     </div>
 
@@ -34,8 +17,56 @@
       <label for="phone"><%= t 'hosts.edit.phone' %></label>
       <input type="text" class="form-control"
              id="phone"
-             ng-model="witness.phone"
+             ng-model="user.phone"
              is-phone
+             required>
+    </div>
+
+    <div class="form-group">
+      <label for="email"><%= t 'users.new.labels.email' %></label>
+      <input type="text" class="form-control"
+             id="email"
+             ng-model="user.email">
+    </div>
+    <button ng-click="submitStepOne()" class="btn btn-warning" ng-show="'stepOne' === steps[stepIndex]"><%= t 'shared.next' %></button>
+  </form>
+  <div ng-show="'error' === steps[stepIndex]">
+  {{errors.error}}
+  <a href="{{errors.link}}">מעבר ליוזר</a>
+  </div>
+  <form name="form" ng-show="'stepTwo' === steps[stepIndex]" ng-class="{true: 'error'}[submitted]" novalidate>
+    <div class="form-group"
+         ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.country.$error.required]">
+      <label for="country"><%= t 'shared.country' %></label>
+      <select class="form-control" id="country"
+              ng-model="witness.country"
+              name="country"
+              required
+              ng-change="onCountrySelect()"
+              ng-options="c.country_name for c in countries">
+        <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
+      </select>
+    </div>
+
+    <div class="form-group"
+         ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.city.$invalid]">
+      <label for="city"><%= t '.city' %></label>
+      <select class="form-control" id="country"
+              ng-model="witness.country_region_city"
+              name="country"
+              required
+              ng-options="c.city_name_en for c in witness.country.cities">
+        <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
+      </select>
+    </div>
+
+    <div class="form-group"
+         ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.address.$invalid]">
+      <label for="address"><%= t '.address' %></label>
+      <input type="text" class="form-control"
+             name="address"
+             id="address"
+             ng-model="witness.address"
              required>
     </div>
 
@@ -99,13 +130,6 @@
                  ng-show="otherLanguageVisible" />
     </div>
 
-    <div class="form-group">
-      <label for="email"><%= t 'users.new.labels.email' %></label>
-      <input type="text" class="form-control"
-             id="email"
-             ng-model="witness.email">
-    </div>
-
     <div class="form-group ">
 	    <label for="stairs"><%= t '.walk_up_stairs' %></label>
       <select class="form-control" id="stairs" 
@@ -120,15 +144,6 @@
       					ng-model="witness.special_needs">
 			</textarea>
     </div>
-
-  <!--   <div class="form-group">
-	    <label for="seminar_required"><%= t '.seminar_required' %></label>
-      <select class="form-control" id="seminar_required" 
-              ng-model="witness.seminar_required"
-              ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.needs' %>', v: true }, { n: '<%= t 'shared.doesnt_need' %>', v: false }]">
-      </select>
-	  </div> -->
-
 
     <label class="control-label"><%= t 'shared.multiple_available_days' %></label>
     <div class="form-inline">
@@ -223,22 +238,6 @@
               ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.yes' %>', v: true }, { n: '<%= t 'shared.no' %>', v: false }]">
       </select>
 	  </div>
-
-    <!-- Concept -->
-<!--     <div class="form-group">
-      <label for="concept"><%= t 'profile.labels.concept' %></label>
-        <select class="form-control"
-                ng-model="witness.concept"
-                id="concept"
-                ng-options="o.v as o.n for o in [
-                  { n: '<%= t 'shared.concept.religious_and_secular' %>', v: 'religious_and_secular' },
-                  { n: '<%= t 'shared.concept.vetrans' %>', v: 'vetrans' },
-                  { n: '<%= t 'shared.concept.eastern' %>', v: 'eastern' }
-                ]">
-        <option value=""><%= t 'shared.select' %></option>
-      </select>
-    </div>
- -->
 
     <button ng-click="submit()" class="btn btn-warning"><%= t 'shared.submit' %></button>
   </form>

@@ -1,18 +1,40 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
+  # :confirmable , :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :validatable,
+         :lockable, :trackable
 
-  belongs_to :meta, polymorphic: true
+  validates :phone, uniqueness: true
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :full_name, :type, :phone
-  attr_accessor :type
+  has_many :user_salon
+  has_many :salon
+  #belongs_to :witness
 
-  before_destroy :save_as_deleted_user
-  
+  def password_required?
+    #false if source = "witness"
+    false
+  end
+
+  def email_required?
+    #false if source = "witness"
+    false
+  end
+
+  def staff?
+    not Staff.where(user_id: id).empty?
+  end
+
+  def admin?
+    not Staff.where(user_id: id, entity_type: 'admin').empty?
+  end
+
+  def manage_salon?(salon)
+    staff = Staff.where(user_id: id)
+    return false if staff.nil?
+    return Staff.manage_salon?(self, salon.id)
+  end
+
   def first_name
     if full_name
       return full_name.split(' ')[0]
@@ -23,33 +45,5 @@ class User < ActiveRecord::Base
     if full_name
       return full_name.split(' ')[1]
     end
-  end
-
-  def manager?
-    self.meta && self.meta.is_a?(Manager)
-  end
-
-  def host?
-    self.meta && self.meta.is_a?(Host)
-  end
-
-  def guest?
-    self.meta && self.meta.is_a?(Guest)
-  end
-
-  def simple_admin?
-    self.meta_type == 'Manager' && !self.sub_admin && !self.admin
-  end
-
-  def any_admin?
-    self.admin || self.sub_admin || (self.meta_type == 'Manager' && !self.sub_admin && !self.admin)
-  end
-
-  def the_admin?
-    self.admin
-  end
-
-  def save_as_deleted_user
-    DeletedUser.create(name: full_name, email: email, type: meta_type)
   end
 end

@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Witness Salons</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>First contactd</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @witness_salons.each do |witness_salon| %>
+      <tr>
+        <td><%= witness_salon.first_contactd %></td>
+        <td><%= link_to 'Show', witness_salon %></td>
+        <td><%= link_to 'Edit', edit_witness_salon_path(witness_salon) %></td>
+        <td><%= link_to 'Destroy', witness_salon, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Witness Salon', new_witness_salon_path %>

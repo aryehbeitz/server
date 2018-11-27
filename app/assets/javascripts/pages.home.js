@@ -32,15 +32,12 @@ app.controller('HomePageController', ['$scope','$http', '$uibModal', function($s
         }
     }
 
-  $scope.init = function(hosts, cities, regions, totalItems, currentUser, countries) {
+  $scope.init = function(hosts, totalItems, currentUser, countries) {
 
     //  Make Israel default country on search
-    $scope.search.country_id = 97;
-
-
+    $scope.search.country_id = 1;
+    $scope.loading = false;
     $scope.hosts = hosts;
-    $scope.cities = cities;
-    $scope.regions = regions;
     $scope.countries = countries;
     $scope.totalItems = totalItems;
     $scope.currentUser = currentUser;
@@ -105,13 +102,18 @@ app.controller('HomePageController', ['$scope','$http', '$uibModal', function($s
   }
 
   $scope.getHosts = function(page) {
-    $scope.loading = true;
+    //$scope.loading = true;
+      region_id = null;
+      if ($scope.search.region) {
+          region_id = $scope.search.region.id;
+      }
+
     $http.get('/pages/home.json', {
       params: {
         page: page,
         'city_ids[]': _.map($scope.search.cities, 'id'),
-        country_id: $scope.search.country_id,
-        region_id: $scope.search.region_id,
+        country_id: $scope.search.country.country_numcode,
+        region_id: region_id,
         event_language: $scope.search.event_language,
         event_date: $scope.search.event_date,
         query: $scope.search.query,
@@ -121,9 +123,7 @@ app.controller('HomePageController', ['$scope','$http', '$uibModal', function($s
       }
     }).then(function(response) {
       $scope.loading = false;
-      $scope.cities = response.data.cities;
-      $scope.regions = response.data.regions;
-      $scope.hosts = JSON.parse(response.data.hosts);
+      $scope.hosts = JSON.parse(response.data.salons);
       $scope.totalItems = response.data.total_items;
     });
   }

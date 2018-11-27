@@ -1,33 +1,33 @@
 
 <header>
-	<div class="right-side">
-		<!-- Home link -->
-		<%= link_to t('.home'), t('.homepage_url'), class: "home" %>
+  <div class="right-side">
+    <!-- Home link -->
+    <%= link_to t('.home'), t('.homepage_url'), class: "home" %>
 
 
 
-		<!-- Signed in user -->
-		<% if user_signed_in? %>
-			<!-- User profile -->
-			<%= link_to(profile_label(current_user), polymorphic_path(current_user.meta), class: 'header-link') if current_user.meta %>
+    <!-- Signed in user -->
+    <% if user_signed_in? %>
+      <!-- User profile -->
+      <%= link_to(profile_label(current_user), polymorphic_path(current_user), class: 'header-link') %>
 
-			<!-- Admin -->
-			<%= link_to(t('.managers'), managers_path, class: 'header-link') if current_user.admin? %>
+      <!-- Admin -->
+      <%= link_to(t('.managers'), staff_url(current_user.id), class: 'header-link') if current_user.staff? %>
 
       <!-- New Admin link - Area Management -->
-      <%= link_to(t('.region_managememnt'), regions_path, class: 'header-link') if current_user.admin? && !current_user.simple_admin? %>
+      <%= link_to(t('.region_managememnt'), staffs_path, class: 'header-link') if current_user.admin? %>
 
-		<!-- Non signed in user -->
-		<% else %>
+      <!-- Non signed in user -->
+    <% else %>
 
       <!-- Buttons for desktop-->
-			<%= link_to signup_path(type: 'host') do %>
-				<div class="hidden-xs header-btn white"><%= t('.want_to_host') %></div>
-			<% end %>
+      <%= link_to signup_path(type: 'host') do %>
+        <div class="hidden-xs header-btn white"><%= t('.want_to_host') %></div>
+      <% end %>
 
-			<%= link_to host_search_path do %>
-				<div class="hidden-xs header-btn orange"><%= t('.want_to_guest') %></div>
-			<% end %>
+      <%= link_to host_search_path do %>
+        <div class="hidden-xs header-btn orange"><%= t('.want_to_guest') %></div>
+      <% end %>
 
       <!--Buttons for mobile-->
       <%= link_to signup_path(type: 'host') do %>
@@ -38,48 +38,48 @@
         <div class="hidden-sm hidden-md hidden-lg header-mobile-btn header-btn orange"><%= t('.want_to_guest_mobile') %></div>
       <% end %>
 
-  <% end %>
-		<!-- End Non signed in user -->
-	</div>
+    <% end %>
+    <!-- End Non signed in user -->
+  </div>
 
-	<div class="left-side">
-		<div class="hidden-xs header-brand"><%= t('.brand') %></div>
-		<% locale = next_locale(I18n.locale) %>
-		<%= link_to locale: locale do %>
+  <div class="left-side">
+    <div class="hidden-xs header-brand"><%= t('.brand') %></div>
+    <% locale = next_locale(I18n.locale) %>
+    <%= link_to locale: locale do %>
       <div onClick="changeLocale('<%=locale.to_str%>')" class="language-btn small-header-btn"><%= locale.capitalize %></div>
-		<% end %>
-		<% if I18n.locale == :he %>
-			<%= link_to "https://www.facebook.com/ZikronBaSalon/" do %>
-				<div class="facebook-btn small-header-btn">f</div>
-			<% end %>
-		<% end %>
-		
-		<!-- Signin/Signout -->
-		<% if user_signed_in? %>
+    <% end %>
+    <% if I18n.locale == :he %>
+      <%= link_to "https://www.facebook.com/ZikronBaSalon/" do %>
+        <div class="facebook-btn small-header-btn">f</div>
+      <% end %>
+    <% end %>
+
+    <!-- Signin/Signout -->
+    <% if user_signed_in? %>
       <span class="hidden-xs">
-        			שלום <%= current_user.full_name %>
+        			שלום <%= current_user.email %>
       </span>
-			<%= link_to t('.signout'), destroy_user_session_path, method: :delete, class: 'header-link' %>
-			<%= link_to t('.signup_staff'), signup_path, class: 'header-link' if current_user.admin? %>
+      <%= link_to t('.signout'), destroy_user_session_path, method: :delete, class: 'header-link' %>
+      <%#= link_to t('.signup_staff'), signup_path, class: 'header-link' if current_user.admin? %>
     <% else %>
-			<%= link_to t('.signin'), user_session_path, class: 'header-link' %>
-		<% end %>
-	</div>
+      <%= link_to t('.signin'), user_session_path, class: 'header-link' %>
+    <% end %>
+  </div>
 </header>
 
 <script type="text/javascript">
-    function setCookie(name,value,days) {
-        var expires = "";
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
-            expires = "; expires=" + date.toUTCString();
-        }
-        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
     }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  }
 
-    function changeLocale(locale) {
-        setCookie('locale', locale, 100000000);
-    }
+  function changeLocale(locale) {
+    setCookie('locale', locale, 100000000);
+  }
 
 </script>

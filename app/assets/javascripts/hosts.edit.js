@@ -18,25 +18,15 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
 	$scope.otherLanguageVisible = false;
 
 	$scope.initAutocomplete = function(iso) {
-		// var options = { types: ['(cities)'] };
-		if(iso) {
-			// options.componentRestrictions = { country: iso }
-		}
-
-    // $scope.autocomplete = new google.maps.places.Autocomplete($("#city")[0], options);
-		$scope.autocomplete = new google.maps.places.Autocomplete($("#city")[0]);
-    // $scope.autocomplete.setComponentRestrictions({'country': ['ps', 'il']});
-
-		google.maps.event.addListener($scope.autocomplete, 'place_changed', getAddress);
 	}
 
 	$scope.openDatepicker = function() {
 		$scope.eventDate.isOpen = true;
 	}
 
-	$scope.init = function(host, countries) {
-		$scope.host = host;
-		$scope.organization = !!$scope.host.org_name;
+	$scope.init = function(salon, countries) {
+		$scope.host = salon;
+		$scope.organization = !!$scope.host.org_id;
 		$scope.countries = countries;
 		$scope.host.event_date = $scope.formatDate(new Date($scope.host.event_date));
 		$scope.host.event_time = $scope.host.event_time ? new Date($scope.host.event_time): null;
@@ -48,13 +38,12 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
 		$scope.cityFromList = false;
 
 		if($scope.host.country) {
-			$scope.initAutocomplete($scope.host.country.iso)
+			$scope.initAutocomplete($scope.host.country)
 		} else {
 			var locale = document.getElementById('locale').className;
 			if(locale === 'he') {
-				var israel = _.find($scope.countries, { iso: 'IL' });
-				$scope.host.country_id = israel.id;
-				$scope.initAutocomplete(israel.iso);
+				$scope.host.country = "israel";
+                $scope.initAutocomplete($scope.host.country)
 			} else {
 				$scope.initAutocomplete();
 			}
@@ -86,7 +75,7 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
 
 	$scope.orgChanged = function(value) {
     if (value === 'false') {
-      $scope.host.org_name = $scope.host.org_role = null;
+      $scope.host.org_id = $scope.host.org_role = null;
     }
   }
 
@@ -112,10 +101,9 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
   $scope.submitStepOne = function() {
   	$scope.submitted[0] = true;
   	if ($scope.stepOne.$valid) {
-  		$http.put('/hosts/' + $scope.host.id + '.json', {
-	  		host: {
-					hosted_before: $scope.host.hosted_before,
-					org_name: $scope.host.org_name,
+  		$http.put('/salons/' + $scope.host.id + '.json', {
+	  		salon: {
+                org_id: $scope.host.org_id,
 					phone: $scope.host.phone
 				}
 	  	}).then(function success(response) {
@@ -126,16 +114,15 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
 
   $scope.submitStepTwo = function() {
   	$scope.submitted[1] = true;
-  	if ($scope.stepTwo.$valid && $scope.result) {
-  		$http.put('/hosts/' + $scope.host.id + '.json', {
-	  		host: {
+  	if ($scope.stepTwo.$valid) {
+  		$http.put('/salons/' + $scope.host.id + '.json', {
+	  		salon: {
 					address: $scope.host.address,
-					city_name: $scope.host.city_name,
+					country_region_city: $scope.host.country_region_city,
 					floor: $scope.host.floor,
 					elevator: $scope.host.elevator,
 					event_date: $scope.host.event_date,
 					event_time: $scope.host.event_time,
-					country_id: $scope.host.country_id
 				}
 	  	}).then(function success(response) {
 	  		$scope.stepIndex += 1; 
@@ -146,14 +133,14 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
   $scope.submitStepThree = function() {
   	$scope.submitted[2] = true;
   	if ($scope.stepThree.$valid) {
-  		$http.put('/hosts/' + $scope.host.id + '.json', {
-	  		host: {
+  		$http.put('/salons/' + $scope.host.id + '.json', {
+	  		salon: {
 					event_language: $scope.host.event_language,
 					survivor_needed: $scope.host.survivor_needed,
 					strangers: $scope.host.strangers,
 					max_guests: $scope.host.max_guests,
 					public_text: $scope.host.public_text,
-					free_text: $scope.host.free_text
+					inside_text: $scope.host.inside_text
 				},
 				finalStep: true,
 				locale: document.getElementById('locale').className
@@ -170,9 +157,9 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
 		    });
 
 	  		modalInstance.result.then(function () {
-		      window.location = '/' + document.getElementById('locale').className + '/hosts/' + $scope.host.id;
+		      window.location = '/' + document.getElementById('locale').className + '/salons/' + $scope.host.id;
 		    }, function () {
-		      window.location = '/' + document.getElementById('locale').className + '/hosts/' + $scope.host.id;
+		      window.location = '/' + document.getElementById('locale').className + '/salons/' + $scope.host.id;
 		    });
 	  	})
   	}
@@ -198,8 +185,7 @@ app.controller('HostEditController', ['$scope','$http','$uibModal','$timeout',
   }
 
   $scope.onCountrySelect = function() {
-  	var country = _.find($scope.countries, {id: $scope.host.country_id} )
-  	$scope.initAutocomplete(country.iso);
+  	$scope.initAutocomplete($scope.host.country);
   }
 
   function getAddress() {

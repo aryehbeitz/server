@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Witness Years</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Phoned</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @witness_years.each do |witness_year| %>
+      <tr>
+        <td><%= witness_year.Phoned %></td>
+        <td><%= link_to 'Show', witness_year %></td>
+        <td><%= link_to 'Edit', edit_witness_year_path(witness_year) %></td>
+        <td><%= link_to 'Destroy', witness_year, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Witness Year', new_witness_year_path %>

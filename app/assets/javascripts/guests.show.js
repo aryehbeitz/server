@@ -10,13 +10,13 @@ app.controller('GuestShowController', ['$scope', '$http', function($scope, $http
 
 	$scope.init = function(guest) {
 		$scope.guest = guest;
-		$scope.invite = guest.invites ? guest.invites[0] : null;
+		$scope.invite = guest.user_salon ? guest.user_salon[0] : null;
 	}
 
 	$scope.deleteInvite = function(invite) {
 		var res = confirm("בטוח בטוח?")
 		if(res) {
-			$http.delete('/invites/' + invite.id + '.json')
+			$http.delete('/user_salons/' + invite.id + '.json')
 					 .then(function(response) {
 							if(response.data.success) {
 								$scope.invite = null;

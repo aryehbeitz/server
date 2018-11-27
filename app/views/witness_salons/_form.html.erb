@@ -1,0 +1,22 @@
+<%= form_with(model: witness_salon, local: true) do |form| %>
+  <% if witness_salon.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(witness_salon.errors.count, "error") %> prohibited this witness_salon from being saved:</h2>
+
+      <ul>
+      <% witness_salon.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :first_contactd %>
+    <%= form.check_box :first_contactd %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

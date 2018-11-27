@@ -32,14 +32,12 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
 
     reset_unused_parameters();
 
-    $scope.init = function(currentUser, hosts, witnesses, cities, countries, regions, totalHosts, totalWitnesses, currentPage) {
+    $scope.init = function(currentUser, salons, witnesses, countries, totalHosts, totalWitnesses, currentPage) {
         $scope.currentUser = currentUser;
-        $scope.hosts = hosts;
+        $scope.hosts = salons;
         $scope.witnesses = witnesses;
-        $scope.cities = cities;
         $scope.countries = countries;
-        $scope.regions = regions;
-        $scope.totalHosts = totalHosts;
+        $scope.totalHosts = salons.length;
         $scope.totalWitnesses = totalWitnesses;
 
 
@@ -57,11 +55,11 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
     };
 
     $scope.editHost = function(host) {
-        window.open('/hosts/' + host.id, '_blank');
+        window.open('/salons/' + host.id, '_blank');
     };
 
     $scope.editWitness = function(witness) {
-        window.open('/witnesses/' + witness.id, '_blank');
+        window.open('/witnesses/' + witness.user.id, '_blank');
     };
 
     $scope.pageChanged = function() {
@@ -116,7 +114,9 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         var params = {
             filter: {
                 host: getFilterKeys($scope.search.host),
-                witness: getFilterKeys($scope.search.witness)
+                witness: getFilterKeys($scope.search.witness),
+                required_salon: $scope.search.required_salon,
+                required_witness_year: $scope.search.required_witness_year
             },
             page: page,
             reverse_ordering: +$scope.search.reverseOrdering,
@@ -125,24 +125,26 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
             host_sort: $scope.sortProp,
             witness_sort: $scope.witnessSortProp,
             has_manager: $scope.search.has_manager,
-            has_host: $scope.search.has_host,
             has_survivor: $scope.search.has_survivor,
             is_red: $scope.search.is_red,
             is_org: $scope.search.is_org,
-            event_language: $scope.search.event_language,
             in_future: $scope.search.in_future,
             has_invites: $scope.search.has_invites
         };
 
-        $http.get('/managers/' + $scope.currentUser.meta.id + '.json' + '?' + $.param(params))
+         if ($scope.search.witness_year) {
+             params['filter']['witness_year'] = {};
+             params['filter']['witness_year'][$scope.search.witness_year.available_day_search] = true;
+         }
+
+
+        $http.get('/staffs/' + $scope.currentUser.id + '.json' + '?' + $.param(params))
             .then(
                 function(response) {
-                    $scope.hosts = JSON.parse(response.data.hosts);
-                    $scope.cities = JSON.parse(response.data.cities);
-                    $scope.regions = JSON.parse(response.data.regions);
-                    $scope.witnesses = JSON.parse(response.data.witnesses);
-                    $scope.pagination.currentPage = response.data.page;
-                    $scope.totalHosts = response.data.total_hosts;
+                    //$scope.salons = JSON.parse(response.data.salons);
+                    $scope.witnesses = response.data.witnesses;
+                    //$scope.pagination.currentPage = response.data.page;
+                    //$scope.totalHosts = response.data.total_hosts;
                     $scope.totalWitnesses = response.data.total_witnesses;
                     $scope.loading = false;
                 })
@@ -287,4 +289,25 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         return host.has_witness && !host.contacted_witness &&
             ((new Date() - new Date(host.assignment_time)) / (1000*60*60*24)) > 2
     };
+
+    $scope.addManager = function(witness) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'host-signup-finished.html',
+            controller: 'AddManagerToWitnessModal',
+            backdrop: false,
+            resolve: {
+                witness: function() {
+                    return $scope.witness;
+                }
+            }
+        });
+
+        modalInstance.result.then(function () {
+            window.location = '/' + document.getElementById('locale').className + '/salons/' + $scope.host.id;
+        }, function () {
+            window.location = '/' + document.getElementById('locale').className + '/salons/' + $scope.host.id;
+        });
+    }
 }]);
+
+app.controller
