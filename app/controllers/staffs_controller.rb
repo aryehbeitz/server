@@ -69,6 +69,12 @@ class StaffsController < ApplicationController
       return
     end
 
+    if params[:staff][:email]
+      user = User.where(email: params[:staff][:email]).first
+      return unless user
+      params[:staff][:user_id] = user.id
+    end
+
     @staff = Staff.new(staff_params)
 
     respond_to do |format|

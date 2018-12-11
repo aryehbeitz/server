@@ -1,5 +1,5 @@
 <div class="col-xs-12" id="manager-index" ng-controller="ManagerIndexController"
-     ng-init="init(<%= @staff.to_json(:include => [:user]) %>, <%= @countries.to_json %>)">
+     ng-init="init(<%= @staffs.to_json(:include => [:user]) %>, <%= @countries.to_json %>)">
 
   <form class="form-inline margin-bottom-20">
   <div class="form-group">
@@ -47,7 +47,8 @@
     </div>
     <div class="form-group">
       <label for="city">עיר</label>
-      <input type="text" class="form-control" id="city" ng-model="city" required>
+      <select class="form-control city-select" ng-model="city"
+              ng-options="city.city_name_he for city in search.region.cites_without_staff" ></select>
     </div>
     <button type="submit" class="btn btn-default">הוסף מוביל</button>
   </form>
@@ -57,7 +58,8 @@
       <tr>
         <th>שם</th>
         <th>מייל</th>
-        <th>ערים</th>
+        <th>סוג</th>
+        <th>מזהה</th>
         <th>פעולות</th>
       </tr> 
     </thead>
@@ -66,13 +68,13 @@
         <td>{{ manager.user ? manager.user.full_name : 'לא רשום' }}</td>
         <td>{{ manager.user ? manager.user.email : manager.temp_email }}</td>
         <td>
-          <span ng-repeat="city in manager.cities" class="tag">
-            {{city.name}}
-            <span class="glyphicon glyphicon-remove" ng-click="removeCity(manager, city)"></span>
-          </span>
+            {{manager.entity_type}}
         </td>
         <td>
-          <button type="button" class="btn btn-danger" ng-click="deleteManager(manager)">מחיקת מוביל</button>
+          {{manager.entity_id}}
+        </td>
+        <td>
+          <button type="button" class="btn btn-danger" ng-click="deleteManager(manager)"> מחק</button>
         </td>
       </tr>
     </tbody>

@@ -9,10 +9,11 @@ app.controller('ManagerIndexController', ['$scope','$http', function($scope, $ht
   }
 
   $scope.createManager = function() {
-  	$http.post('/managers', {
-  		manager: {
-  			temp_email: $scope.email,
-  			city_name: $scope.city
+  	$http.post('/staffs.json', {
+  		staff: {
+  			email: $scope.email,
+            entity_type: 'city',
+  			entity_id: $scope.city.city_id
   		}
   	}).then(function(response) {
   		var manager = response.data;
@@ -23,22 +24,6 @@ app.controller('ManagerIndexController', ['$scope','$http', function($scope, $ht
   			$scope.managers.push(manager);
   		}
   	});
-  }
-
-  $scope.initCityInput = function() {
-    var input = document.getElementById('city');
-    // $scope.autocomplete = new google.maps.places.Autocomplete(input ,{ types: ['(cities)'] });
-    $scope.autocomplete = new google.maps.places.Autocomplete(input);
-    // $scope.autocomplete.setComponentRestrictions({'country': ['ps', 'il']});
-    $scope.autocomplete.addListener('place_changed', getAddress);
-  }
-
-  function getAddress() {
-    $scope.result = $scope.autocomplete.getPlace();
-    if($scope.result && $scope.result.vicinity.indexOf(',') === -1) {
-      $scope.city = $scope.result.vicinity;
-    }
-    $scope.$apply();
   }
 
   $scope.removeCity = function(manager, city) {
@@ -56,7 +41,7 @@ app.controller('ManagerIndexController', ['$scope','$http', function($scope, $ht
   $scope.deleteManager = function(manager) {
     var dialog = confirm("בטוח בטוח??");
     if (dialog == true) {
-        $http.delete('managers/' + manager.id)
+        $http.delete('/staffs/' + manager.id)
         .then(function(response) {
           $scope.managers = _.filter($scope.managers, function(manager) { 
             return manager.id !== response.data.id 
@@ -64,12 +49,5 @@ app.controller('ManagerIndexController', ['$scope','$http', function($scope, $ht
         });
     }
   }
-
-  function getPlaceLocality(place) {
-  	return _.filter(place.address_components, function(component) { 
-  		return _.includes(component.types, 'locality');
-  	})[0].long_name;
-  }
-
 
 }]);
