@@ -19,5 +19,7 @@ module Zikaron
     config.i18n.default_locale = :he
     config.i18n.available_locales = [:he, :en]
     config.i18n.fallbacks = [:he]
+
+    #config.serve_static_assets = true
   end
 end

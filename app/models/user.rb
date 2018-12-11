@@ -46,4 +46,16 @@ class User < ApplicationRecord
       return full_name.split(' ')[1]
     end
   end
+
+  def self.exist?(email,phone)
+    return nil if email.nil? && phone.nil?
+    if !email.nil?
+      user = User.where(email: email)
+      user = user.or(User.where(phone: phone)) if !phone.nil?
+    else
+      user = User.where(phone: phone) if !phone.nil?
+    end
+    return user.first if !user.first.nil?
+    return nil
+  end
 end

@@ -29,6 +29,12 @@ class Staff < ApplicationRecord
     end
   end
 
+  def self.direct_manager_witness(current_user)
+    direct = Staff.where(user_id: current_user.id, entity_type: 'witness').pluck(:entity_id)
+
+    Witness.where(id: direct)
+  end
+
   def self.manage_salon?(current_user, salon)
     salons(current_user).pluck(:id).include?(salon)
   end
@@ -38,6 +44,7 @@ class Staff < ApplicationRecord
     staff_list = []
     staff.each do |s|
       json = {
+          id: s.id,
           user_id: s.user.id,
           name: s.user.full_name
       }
@@ -45,5 +52,9 @@ class Staff < ApplicationRecord
     end
 
     return staff_list
+  end
+
+  def self.is_manager_of_entity(current_user,entity_type, entity_id)
+    return true
   end
 end

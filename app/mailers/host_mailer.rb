@@ -28,7 +28,7 @@ class HostMailer < BaseMailer
   def moment_before(host_id) 
     @host = Host.find(host_id)
     attachments['ערכת מארח - זיכרון בסלון.pdf'] = File.read("#{Rails.root}/public/host_kit_2016.pdf")  
-    mail :to => @host.user.email, :subject => 'זיכרון בסלון - רגע לפני'
+    #mail :to => @host.user.email, :subject => 'זיכרון בסלון - רגע לפני'
   end
 
   def moment_after(host_id)

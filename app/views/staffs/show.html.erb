@@ -3,6 +3,7 @@
         <%= @salons.to_json(:include => [:user, :country_region_city]) %>,
         <%= @witnesses.to_json(:include => [:user, :country_region_city, :witness_year], :methods => [:direct_manager_json]) %>,
         <%= @countries.to_json %>,
+        <%= @managers.to_json(:include => [:user]) %>,
         <%#= @total_hosts.to_json %> 0,<%= @total_witnesses.to_json %>)"> <%#= @page.to_json %>
 
     <a ng-click="export_hosts()">ייצא מארחים לאקסל</a>
@@ -344,6 +345,12 @@
           </input>
         </div>
 
+        <div class="form-group">
+          <label>עדים שאני מוביל</label>
+          <input type="checkbox" class="form-control" ng-model="search.direct_manager">
+          </input>
+        </div>
+
         <div class="form-group pull-left">
           <input type="text" class="form-control" ng-model="query.witness"
                  placeholder="<%= t 'shared.search' %>" />
@@ -393,8 +400,8 @@
             <td>{{ formatWitnessType(witness.witness_type) }}</td>
               <td>
                 <div ng-repeat="manager in witness.direct_manager_json">
-                  {{manager.name}}
-                  <button ng-click="deleteManager(witness,manager.id)" class="btn btn-danger">הסר</button>
+                  {{manager.user_id}} {{manager.name}}
+                  <button ng-click="deleteManager(manager);$event.stopPropagation();" class="btn btn-danger">הסר</button>
                 </div>
 
               </td>
@@ -427,3 +434,14 @@
 
 
 </div>
+
+<script type="text/ng-template" id="add_manager_to_entity.html">
+  <div class="modal-body text-center">
+    <div class="close glyphicon glyphicon-remove" ng-click="cancel()"></div>
+    <p>בחר מוביל</p>
+    <div ng-repeat="manager in managers" ng-click="select(manager)">
+    {{manager.user_id}} - {{manager.user.full_name}}
+      <button class="btn btn-info">בחר</button>
+    </div>
+  </div>
+</script>

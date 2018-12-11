@@ -22,6 +22,10 @@ class StaffsController < ApplicationController
     @witnesses = Staff.witness(current_user).includes(:user, :country_region_city, :witness_year)
 
     if params[:filter]
+      if params[:filter][:direct_manager] == "true"
+        @witnesses = Staff.direct_manager_witness(current_user).includes(:user, :country_region_city, :witness_year)
+      end
+
       @witnesses = @witnesses.where(witness_filter) if witness_filter
 
       @witnesses = @witnesses.joins(:salon) if params[:filter][:has_host] == "true"
@@ -35,6 +39,7 @@ class StaffsController < ApplicationController
     @total_witnesses = @witnesses.count
     @witnesses = @witnesses.paginate(:page => params[:page] || 1, :per_page => 10)
     #@countries = CountryRegionCity.get_all
+    @managers = Staff.all
   end
 
   def witness_filter
@@ -60,6 +65,10 @@ class StaffsController < ApplicationController
   # POST /staffs
   # POST /staffs.json
   def create
+    if !Staff.is_manager_of_entity(current_user, params[:staff][:entity_type], params[:staff][:entity_id])
+      return
+    end
+
     @staff = Staff.new(staff_params)
 
     respond_to do |format|
@@ -90,7 +99,7 @@ class StaffsController < ApplicationController
   # DELETE /staffs/1
   # DELETE /staffs/1.json
   def destroy
-    @staff.destroy
+    Staff.find(params[:id]).destroy
     respond_to do |format|
       format.html { redirect_to staffs_url, notice: 'Staff was successfully destroyed.' }
       format.json { head :no_content }
@@ -105,6 +114,6 @@ class StaffsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def staff_params
-      params.require(:staff).permit(:type)
+      params.require(:staff).permit(:user_id, :entity_type, :entity_id)
     end
 end

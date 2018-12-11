@@ -16,3 +16,10 @@ test:
   pool: 5
   username: postgres
   password: postgres
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  url: postgresql://localhost/zb_development?pool=5
+  username: postgres
+  password: postgres
