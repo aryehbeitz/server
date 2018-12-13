@@ -1,4 +1,4 @@
-<h1><%= @user.first_name %>,</h1>
+<h1><%= @host.user.first_name %>,</h1>
 <br/>
 
 <div dir="<%= @locale == :he ? 'rtl' : 'ltr' %>">
@@ -17,7 +17,7 @@
   <strong><u>מה עכשיו?</u></strong>
   <p>
     כדאי להציץ שוב
-    <%= link_to t('shared.profile_link', locale: @locale), host_url(id:@host.id, locale: @locale) %>
+    <%= link_to t('shared.profile_link', locale: @locale), salon_url(id:@host.id, locale: @locale) %>
     ולוודא שכל הפרטים שמילאת נכונים. אם משהו השתנה, ניתן ללחוץ על כפתור ה״עריכה״ בפרופיל. בפרופיל האישי ניתן גם לראות ולאשר בקשות להתארח (אם מדובר בסלון פתוח) ואת פרטי איש העדות (במידה וציוותנו).
   </p>
 

@@ -1,6 +1,6 @@
 # encoding: UTF-8
 class HostMailer < BaseMailer
-	include Sidekiq::Worker
+	#include Sidekiq::Worker
   include Roadie::Rails::Automatic
   layout 'mailer_default'
   default from: "\"זיכרון בסלון\" <zikaronbasalon@gmail.com>"
@@ -10,11 +10,10 @@ class HostMailer < BaseMailer
   # 	mail :to => manager_email, :subject => "מארח חדש בעירך"
   # end
 
-  def new_host(user_id, locale)
-  	@user = User.find(user_id)
-    @host = Host.joins(:user).where('users.id =' + user_id.to_s).last
+  def new_host(salon, locale)
+    @host = salon
     @locale = locale
-  	mail :to => @user.email, :subject => t('host_mailer.new_host.subject', locale: @locale)
+  	mail :to => salon.user.email, :subject => t('host_mailer.new_host.subject', locale: @locale)
   end
 
   def witness_assigned(host_id, witness_id, locale)

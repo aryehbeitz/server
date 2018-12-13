@@ -21,5 +21,12 @@ module Zikaron
     config.i18n.fallbacks = [:he]
 
     #config.serve_static_assets = true
+
+    config.filter_parameters += [:password]
+
+    config.active_support.escape_html_entities_in_json = true
+
+    config.action_mailer.default_url_options = { host: 'zikaronbasalon.herokuapp.com' }
+
   end
 end
