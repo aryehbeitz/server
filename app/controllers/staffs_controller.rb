@@ -1,7 +1,7 @@
 class StaffsController < ApplicationController
-  before_action :set_staff, only: [:show, :edit, :update, :destroy]
+  before_action :set_staff, only: [:show, :update, :destroy]
   before_action :is_staff
-  before_action :is_admin, only: [:index]
+  before_action :is_admin, only: [:index, :destroy, :update]
 
   def is_admin
     redirect_to root_path unless current_user && (current_user.admin?)
@@ -51,15 +51,6 @@ class StaffsController < ApplicationController
     filter = params[:filter].try(:[], :witness_year)
     filter.permit(:available_day1, :available_day2, :available_day3, :available_day4, :available_day5, :available_day6,
                   :available_day7) if filter
-  end
-
-  # GET /staffs/new
-  def new
-    @staff = Staff.new
-  end
-
-  # GET /staffs/1/edit
-  def edit
   end
 
   # POST /staffs

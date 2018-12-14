@@ -30,35 +30,23 @@ class PagesController < ApplicationController
 
     @salons = Salon.includes(:user, :country_region_city, :user_salon)#.where(host_conditions_hash)
     @salons = @salons.where.not(user_id: current_user.id) if !current_user.nil?
-    puts @salons.to_json
 
     @salons = @salons.where(country_region_city_id: CountryRegionCity.get_ids_by_country(country_id)) if !country_id.nil?
-    puts @salons.to_json
 
     # additional filtering
     #@hosts = @hosts.where('invites_confirmed_count + invites_pending_count < max_guests')
     @salons = filter_by_query(@salons, query)
     @salons = filter_by_language(@salons, 'event_language', params[:event_language])
-    puts @salons.to_json
     @salons = @salons.paginate(:page => params[:page] || 1, :per_page => 10)
-    puts @salons.to_json
     @total_items = @salons.count
 
     @salons = sort_by_field(@salons, params[:sort] || 'user.full_name')
     if params[:reverse_ordering].to_i == 0
       @salons = @salons.reverse
     end
+
     @countries = CountryRegionCity.get_all
 
-    #@regions = []
-    #if country_id.present?
-    #  @regions = Region.where(country_id: country_id)
-    #end
-    #@regions = @regions.sort_alphabetical_by{ |r| r[:name] }
-
-    puts 's'
-    puts @salons
-    puts 'e'
     respond_to do |format|
       format.html
       format.json { render json: {

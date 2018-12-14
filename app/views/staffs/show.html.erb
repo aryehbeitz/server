@@ -406,11 +406,11 @@
 
               </td>
             <td>
-                {{witness.witness_year[0].first_staff_contacted}}
+                {{witness.witness_year != undefined}}
             </td>
               <td>
-                <a href="/<%= Year.current_year %>/witnesses/{{witness.id}}/witness_years" ng-click="$event.stopPropagation();" class="btn btn-link">שימור</a>
-                <button ng-class="{'disabled': !(witness.witness_year[0] && witness.witness_year[0].first_staff_contacted)}" ng-click="alert('123');$event.stopPropagation();" class="btn btn-link">שיבוץ</button>
+                <a href="/<%= Year.current_year %>/witnesses/{{witness.id}}/witness_years/{{witness.witness_year.id}}" ng-click="$event.stopPropagation();" class="btn btn-link">שימור</a>
+                <button ng-class="{'disabled': !(witness.witness_year[0])}" ng-click="alert('123');$event.stopPropagation();" class="btn btn-link">שיבוץ</button>
                 <button ng-click="addManager(witness);$event.stopPropagation();" class="btn btn-info">הוסף מוביל</button>
                 <button ng-click="deleteWitness(witness);$event.stopPropagation();" class="btn btn-danger">מחק/י</button>
               </td>

@@ -1,16 +1,20 @@
 class UsersController < ApplicationController
-	# before_action :authenticate_user!
+	before_action :authenticate_user!, only: [:show, :assignrole, :profile]
+	before_action :set_user, only: [:show, :assignrole, :profile]
+	before_action :check_permission!, only: [:show, :edit, :update, :destroy]
+
+	def check_permission!
+		render :file => "public/404.html", :status => :not_found unless current_user.staff? or @user == current_user
+	end
+
 	def new
 		@type = params[:type]
 	end
 
 	def show
-		@user = User.find(params[:id])
 		@user_salons = @user.user_salon.all
 		@salons = @user.salon.all
 	end
-
-
 
 	def assignrole
 		if !params[:changerole].nil?
@@ -33,6 +37,11 @@ class UsersController < ApplicationController
 		else
 			redirect_to polymorphic_path(current_user.meta)
 		end
+	end
+
+	def set_user
+		@user = User.where(id: params[:id]).first
+		render :file => "public/404.html", :status => :not_found if @user.nil?
 	end
 	
 end

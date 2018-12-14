@@ -2,7 +2,7 @@ class Comment < ApplicationRecord
   belongs_to :user, optional: true
 
   def self.get_all_json(entity_id, entity_type)
-    comments = Comment.where(entity_id: entity_id, entity_type: entity_type).includes(:user)
+    comments = Comment.where(entity_id: entity_id, entity_type: entity_type).order('created_at DESC').includes(:user)
     comments.map do |c|
       if c.user.nil?
         full_name = ''

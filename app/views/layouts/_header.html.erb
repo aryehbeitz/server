@@ -57,7 +57,7 @@
     <!-- Signin/Signout -->
     <% if user_signed_in? %>
       <span class="hidden-xs">
-        			שלום <%= current_user.email %>
+        			שלום <%= current_user.full_name %>
       </span>
       <%= link_to t('.signout'), destroy_user_session_path, method: :delete, class: 'header-link' %>
       <%#= link_to t('.signup_staff'), signup_path, class: 'header-link' if current_user.admin? %>

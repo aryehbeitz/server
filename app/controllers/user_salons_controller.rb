@@ -1,24 +1,10 @@
 class UserSalonsController < ApplicationController
-  before_action :set_user_salon, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  before_action :set_user_salon, only: [:update, :destroy]
+  before_action :check_permission!, only: [:update, :destroy]
 
-  # GET /user_salons
-  # GET /user_salons.json
-  def index
-    @user_salons = UserSalon.all
-  end
-
-  # GET /user_salons/1
-  # GET /user_salons/1.json
-  def show
-  end
-
-  # GET /user_salons/new
-  def new
-    @user_salon = UserSalon.new
-  end
-
-  # GET /user_salons/1/edit
-  def edit
+  def check_permission!
+    render :file => "public/404.html", :status => :not_found unless current_user.staff? or @user_salon.user == current_user
   end
 
   # POST /user_salons
@@ -66,7 +52,8 @@ class UserSalonsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_salon
-      @user_salon = UserSalon.find(params[:id])
+      @user_salon = UserSalon.where(id: params[:id]).first
+      render :file => "public/404.html", :status => :not_found if @user_salon.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -1,6 +1,11 @@
 class SalonsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_salon, only: [:show, :edit, :update, :destroy]
+  before_action :check_permission!, only: [:show, :edit, :update, :destroy]
+
+  def check_permission!
+    render :file => "public/404.html", :status => :not_found unless current_user.staff? or @salon.user == current_user
+  end
 
   def salon_params
     params.require(:salon).permit(:org_id, :address, :country_region_city_id, :floor, :elevator, :event_date, :event_time,
@@ -10,13 +15,12 @@ class SalonsController < ApplicationController
   # GET /salons
   # GET /salons.json
   def index
-    @salons = Salon.where(year: @year).join(&User_Salon).join(&Witness_Salon)
+    #@salons = Salon.where(year: @year).join(&User_Salon).join(&Witness_Salon)
   end
 
   # GET /salons/1
   # GET /salons/1.json
   def show
-    @salon = Salon.find(params[:id])
   end
 
   # GET /salons/new
@@ -73,8 +77,9 @@ class SalonsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # Use callbacks to share common setup or cons traints between actions.
     def set_salon
-      @salon = Salon.find(params[:id])
+      @salon = Salon.where(id: params[:id]).first
+      render :file => "public/404.html", :status => :not_found if @salon.nil?
     end
 end

@@ -17,4 +17,8 @@ class ManagerMailer < BaseMailer
   	  	mail :to => "edut.basalon@gmail.com", :subject => "ביטול ציוות"
 
   end
+
+  def witness_contact_help(witness, help_type)
+
+  end
 end
