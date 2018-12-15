@@ -1,7 +1,7 @@
 <div class="col-xs-12" ng-controller="ManagerShowController"
      ng-init="init(<%= current_user.to_json() %>,
         <%= @salons.to_json(:include => [:user, :country_region_city]) %>,
-        <%= @witnesses.to_json(:include => [:user, :country_region_city, :witness_year], :methods => [:direct_manager_json]) %>,
+        <%= @witnesses.to_json(:include => [:witness_year, :user, :country_region_city], :methods => [:direct_manager_json]) %>,
         <%= @countries.to_json %>,
         <%= @managers.to_json(:include => [:user]) %>,
         <%#= @total_hosts.to_json %> 0,<%= @total_witnesses.to_json %>)"> <%#= @page.to_json %>
@@ -406,11 +406,12 @@
 
               </td>
             <td>
-                {{witness.witness_year != undefined}}
+                {{formatBool(witness.witness_year != undefined)}}
+                {{witness.witness_year && !witness.witness_year.first_staff_contacted ? ' - נדרשת שיחה נוספת': ''}}
             </td>
               <td>
                 <a href="/<%= Year.current_year %>/witnesses/{{witness.id}}/witness_years/{{witness.witness_year.id}}" ng-click="$event.stopPropagation();" class="btn btn-link">שימור</a>
-                <button ng-class="{'disabled': !(witness.witness_year[0])}" ng-click="alert('123');$event.stopPropagation();" class="btn btn-link">שיבוץ</button>
+                <a href="/witnesses/{{witness.id}}/assign" ng-class="{'disabled': !(witness.witness_year && witness.witness_year.first_staff_contacted)}" ng-click="$event.stopPropagation();" class="btn btn-link">שיבוץ</a>
                 <button ng-click="addManager(witness);$event.stopPropagation();" class="btn btn-info">הוסף מוביל</button>
                 <button ng-click="deleteWitness(witness);$event.stopPropagation();" class="btn btn-danger">מחק/י</button>
               </td>

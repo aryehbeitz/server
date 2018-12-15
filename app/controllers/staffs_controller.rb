@@ -18,7 +18,7 @@ class StaffsController < ApplicationController
   # GET /staffs/1
   # GET /staffs/1.json
   def show
-    @salons = Staff.salons(current_user)
+    @salons = Staff.salons(current_user).includes(:user, :country_region_city)
     @witnesses = Staff.witness(current_user).includes(:user, :country_region_city, :witness_year)
 
     if params[:filter]
@@ -38,8 +38,10 @@ class StaffsController < ApplicationController
 
     @total_witnesses = @witnesses.count
     @witnesses = @witnesses.paginate(:page => params[:page] || 1, :per_page => 10)
-    #@countries = CountryRegionCity.get_all
-    @managers = Staff.all
+    @countries = CountryRegionCity.get_all
+    @managers = Staff.all.includes(:user)
+
+    puts @witnesses[0].to_json(:include => [:witness_year, :user, :country_region_city], :methods => [:direct_manager_json])
   end
 
   def witness_filter

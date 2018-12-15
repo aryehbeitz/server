@@ -39,12 +39,8 @@ class WitnessYearsController < ApplicationController
 
     #send email
 
-    puts @witness_year.to_json
-
     @witness_year.update_attributes(witness_year_params) if params[:witness_year].present?
 
-    puts @comment.to_json
-    puts @witness_year.to_json
     begin
     ActiveRecord::Base.transaction do
       @witness_year.save!

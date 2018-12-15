@@ -36,6 +36,7 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         $scope.currentUser = currentUser;
         $scope.hosts = salons;
         $scope.witnesses = witnesses;
+        console.log(witnesses);
         $scope.countries = countries;
         $scope.totalHosts = salons.length;
         $scope.totalWitnesses = totalWitnesses;
@@ -60,7 +61,7 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
     };
 
     $scope.editWitness = function (witness) {
-        window.open('/witnesses/' + witness.user.id, '_blank');
+        window.open('/witnesses/' + witness.id, '_blank');
     };
 
     $scope.pageChanged = function () {

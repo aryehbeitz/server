@@ -26,8 +26,6 @@ class WitnessesController < ApplicationController
   # POST /witnesses
   # POST /witnesses.json
   def create
-    puts "c"
-    puts witness_params
     user_params = params[:witness][:user]
     user = User.find(user_params[:id])
     @witness = Witness.where(user_id: user.id).first
@@ -100,7 +98,7 @@ class WitnessesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_witness
-      @witness = Witness.where(user_id: params[:id]).first
+      @witness = Witness.find(params[:id])
       redirect_to witnesses_url if @witness.nil?
     end
 

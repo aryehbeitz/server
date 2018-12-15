@@ -8,7 +8,7 @@ app.controller('UserSigninController', ['$scope', '$http', '$uibModal', 'activeU
 		$scope.locale = document.getElementById('locale').className;
 		event.preventDefault();
 		if ($scope.signinForm.$valid) {
-			$http.post('/users/sign_in.json', {
+			$http.post('sign_in.json', {
 				user: {
 					email: $scope.form.email,
 					password: $scope.form.password,

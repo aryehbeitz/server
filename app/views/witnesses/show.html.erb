@@ -147,7 +147,7 @@
                 לא משובץ
               </div>
               <div ng-if="!witness.external_assignment && !witness.archived && !witness.need_to_followup">
-                <%= link_to t('profile.assign_host'), assign_witness_path(@witness.user) %>
+                <%= link_to t('profile.assign_host'), assign_witness_path(@witness) %>
               </div>
               <div ng-if="witness.external_assignment">
                 <%= t('profile.labels.external_assignment_explain') %>

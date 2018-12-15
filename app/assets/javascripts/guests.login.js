@@ -8,7 +8,7 @@ app.controller('GuestSigninController', ['$scope', '$http', 'activeUsers', funct
 		$scope.error = false;
 		event.preventDefault();
 		if ($scope.signinForm.$valid) {
-			$http.post('/users/sign_in.json', {
+			$http.post('sign_in.json', {
 				user: {
 					email: $scope.form.email,
 					password: $scope.form.password,
