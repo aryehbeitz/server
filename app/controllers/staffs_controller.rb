@@ -38,8 +38,6 @@ class StaffsController < ApplicationController
 
     @total_witnesses = @witnesses.count
     @witnesses = @witnesses.paginate(:page => params[:page] || 1, :per_page => 10)
-    @countries = CountryRegionCity.get_all
-    @managers = Staff.all.includes(:user)
   end
 
   def witness_filter

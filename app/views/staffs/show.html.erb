@@ -2,8 +2,8 @@
      ng-init="init(<%= current_user.to_json() %>,
         <%= @salons.to_json(:include => [:user, :country_region_city]) %>,
         <%= @witnesses.to_json(:include => [:witness_year, :user, :country_region_city], :methods => [:direct_manager_json]) %>,
-        <%= @countries.to_json %>,
-        <%= @managers.to_json(:include => [:user]) %>,
+        <%= CountryRegionCity.get_all.to_json %>,
+        <%= Staff.all.includes(:user).to_json(:include => [:user]) %>,
         <%#= @total_hosts.to_json %> 0,<%= @total_witnesses.to_json %>)"> <%#= @page.to_json %>
 
     <a ng-click="export_hosts()">ייצא מארחים לאקסל</a>
