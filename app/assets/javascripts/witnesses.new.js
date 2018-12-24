@@ -53,7 +53,7 @@ app.controller('WitnessYearNewController', ['$scope','$http','$timeout', functio
                 })
 			.then(function(response) {
 				if(response.status === 201) {
-					window.location = '/' + document.getElementById('locale').className + '/witnesses/' + response.data.id;
+					window.location = '/' + document.getElementById('locale').className + '/staffs/current';
 				} else {
                     console.log(response.data);
 					//_.each(response.data, addAlert);

@@ -5,21 +5,15 @@ app.controller('WitnessAssignController', ['$scope', '$http', '$uibModal',
 	$scope.filter = {};
   $scope.success = false;
 
-  $scope.init = function(witness, salons) {
-      $scope.salons = salons;
-
+  $scope.init = function(witness, countries) {
     $scope.pagination = {
       currentPage: 1
     };
 
     $scope.witness = witness;
-    $scope.hosts = hosts;
-    $scope.cities = cities;
-    $scope.filter.city_id = cityId;
+    $scope.countries = countries;
 
-    $scope.$watch("filter.city_id", $scope.filterHosts, true);
-
-    $scope.$watch('filter.query', _.throttle(function(oldVal, newVal) {
+    $scope.$watch('filter', _.throttle(function(oldVal, newVal) {
       if(newVal != oldVal) {
         $scope.filterHosts();
       }
@@ -35,21 +29,19 @@ app.controller('WitnessAssignController', ['$scope', '$http', '$uibModal',
 
   $scope.filterHosts = function() {
   	var params = {};
+    params.filter = $scope.filter.query || {};
 
-  	if($scope.filter.city_id) {
-  		params.city_id = $scope.filter.city_id;
-  	}
-
-    if($scope.filter.query) {
-      params.query = $scope.filter.query;
+    if ($scope.filter.special) {
+        $scope.filter.special.country ? params.filter.country_id = $scope.filter.special.country.country_numcode: undefined;
+        $scope.filter.special.city ? params.filter.country_region_city_id = $scope.filter.special.city.city_id : undefined;
     }
 
     params.page = $scope.pagination.currentPage;
 
-    $http.get('/witnesses/' + $scope.witness.id + '/assign.json'+ '?' + $.param(params))
+    $http.get('/salons.json'+ '?' + $.param(params))
     .then(function(response) {
-        $scope.hosts = JSON.parse(response.data.hosts);
-        $scope.hosts_count = JSON.parse(response.data.hosts_count);
+        $scope.salons = response.data.salons;
+        //$scope.hosts_count = JSON.parse(response.data.hosts_count);
     });
 
   }

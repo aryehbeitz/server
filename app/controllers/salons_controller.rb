@@ -12,10 +12,30 @@ class SalonsController < ApplicationController
     :event_language, :survivor_needed, :strangers, :max_guests, :public_text, :inside_text, :witness_id)
   end
 
-  # GET /salons
   # GET /salons.json
+
   def index
-    #@salons = Salon.where(year: @year).join(&User_Salon).join(&Witness_Salon)
+    @salons = Salon.all.includes(:user).includes(:country_region_city)
+
+    if params[:filter]
+
+      filters = {}
+      if params[:filter][:country_id] and not params[:filter][:country_region_city_id].present?
+        country_region_city_id = CountryRegionCity.get_ids_by_country(params[:filter][:country_id])
+        filters[:country_region_city_id] = country_region_city_id
+      end
+
+      filters[:country_region_city_id] = params[:filter][:country_region_city_id] if params[:filter][:country_region_city_id].present?
+      filters[:survivor_needed] = params[:filter][:survivor_needed] if params[:filter][:survivor_needed].present?
+
+      filters[:event_language] = params[:filter][:event_language] if params[:filter][:event_language].present?
+
+      @salons = @salons.where(filters)
+
+      @salons = @salons.where('witness_id IS NOT NULL') if params[:filter][:has_survivor] == 'true'
+      @total_salons = @salons.count
+      @salons = @salons.paginate(:page => params[:page] || 1, :per_page => 10)
+    end
   end
 
   # GET /salons/1

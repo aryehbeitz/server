@@ -40,8 +40,6 @@ class StaffsController < ApplicationController
     @witnesses = @witnesses.paginate(:page => params[:page] || 1, :per_page => 10)
     @countries = CountryRegionCity.get_all
     @managers = Staff.all.includes(:user)
-
-    puts @witnesses[0].to_json(:include => [:witness_year, :user, :country_region_city], :methods => [:direct_manager_json])
   end
 
   def witness_filter

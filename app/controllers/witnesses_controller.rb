@@ -82,6 +82,7 @@ class WitnessesController < ApplicationController
   # GET /witnesses/1/assign
   def assign
     @salons = Salon.all
+    @countries = CountryRegionCity.get_cities_by_country
   end
 
   def unassign
