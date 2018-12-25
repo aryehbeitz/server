@@ -2,7 +2,7 @@
      ng-init="init(<%= current_user.to_json() %>,
         <%= @salons.to_json(:include => [:user, :country_region_city]) %>,
         <%= @witnesses.to_json(:include => [:witness_year, :user, :country_region_city], :methods => [:direct_manager_json]) %>,
-        <%= CountryRegionCity.get_all.to_json %>,
+        <%= CountryRegionCity.get_cities_by_country.to_json %>,
         <%= Staff.all.includes(:user).to_json(:include => [:user]) %>,
         <%#= @total_hosts.to_json %> 0,<%= @total_witnesses.to_json %>)"> <%#= @page.to_json %>
 
@@ -260,8 +260,15 @@
         <span><%= t 'shared.filter_by' %>:</span>
 
         <div class="form-group">
-          <select class="form-control" ng-model="search.witness.city_id"
-                  ng-options="o.id as o.name for o in cities">
+          <select class="form-control city-select" ng-model="search.country"
+                  ng-options="o.country_name for o in countries | orderBy:'country_name'">
+            <option value=""><%= t 'shared.country' %></option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <select class="form-control" ng-model="search.city"
+                  ng-options="o.city_name_he for o in search.country.cities">
             <option value=""><%= t 'shared.city' %></option>
           </select>
         </div>
@@ -286,17 +293,6 @@
             <option value=""><%= t 'shared.has_host' %></option>
           </select>
         </div>
-
-        <div class="form-group">
-           <select class="form-control" ng-model="search.witness.concept"
-                   ng-options="o.v as o.n for o in [
-                     { n: '<%= t 'shared.concept.religious_and_secular' %>', v: 'religious_and_secular' },
-                     { n: '<%= t 'shared.concept.vetrans' %>', v: 'vetrans' },
-                     { n: '<%= t 'shared.concept.eastern' %>', v: 'eastern' }
-                   ]">
-             <option value=""><%= t 'shared.concept_label' %></option>
-           </select>
-         </div>
 
         <div class="form-group">
           <select class="form-control" ng-model="search.witness.language">

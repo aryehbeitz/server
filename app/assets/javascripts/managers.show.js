@@ -113,6 +113,13 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
             $scope.search.witness.need_to_followup = true;
         }
 
+        if ($scope.search.city) {
+            $scope.search.witness.country_region_city_id = $scope.search.city.id;
+            $scope.country_numcode = undefined;
+        } else if ($scope.search.country) {
+            $scope.country_numcode = $scope.search.country.country_numcode;
+        }
+
         var params = {
             filter: {
                 host: getFilterKeys($scope.search.host),
@@ -132,7 +139,8 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
             is_red: $scope.search.is_red,
             is_org: $scope.search.is_org,
             in_future: $scope.search.in_future,
-            has_invites: $scope.search.has_invites
+            has_invites: $scope.search.has_invites,
+            country_numcode: $scope.country_numcode
         };
 
         if ($scope.search.witness_year) {

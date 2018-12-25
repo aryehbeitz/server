@@ -42,6 +42,7 @@
 //= require managers.index
 //= require witnesses.show
 //= require witnesses.assign
+//= require witness_year.new
 //= require_self
 
 $(function() {
