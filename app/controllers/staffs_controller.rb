@@ -28,7 +28,7 @@ class StaffsController < ApplicationController
 
       @witnesses = @witnesses.where(witness_filter) if witness_filter
 
-      if params[:country_numcode]
+      if not params[:country_numcode].empty?
         country_region_city_ids = CountryRegionCity.get_ids_by_country(params[:country_numcode])
         @witnesses = @witnesses.where(country_region_city_id: country_region_city_ids)
       end
