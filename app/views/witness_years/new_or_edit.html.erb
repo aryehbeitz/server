@@ -10,285 +10,314 @@
   
   <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}">{{alert.msg}}</uib-alert>
 
-  <form name="form" ng-class  ="{true: 'error'}[submitted]" novalidate ng-hide="witness.archived">
+  <div class="col-xs-4" ng-show="witness.archived">
+    העד לא מעוניין להתארח
+    אם ידוע לך אחרת, אנא פנה למנהל
+  </div>
 
-
-
-<div class="col-xs-3">
-    <div class="form-group">
-      <label for="full_name"><%= t 'users.new.labels.full_name' %></label>
-      <input type="text" class="form-control"
-             id="full_name"
-             ng-model="user.full_name"
-             disabled
-             >
-    </div>
-
-    <div class="form-group">
-      <label for="phone"><%= t 'hosts.edit.phone' %></label>
-      <input type="text" class="form-control"
-             id="phone"
-             ng-model="user.phone"
-             disabled>
-    </div>
-
-    <div class="form-group">
-      <label for="additional_phone"><%= t 'salons.new.additional_phone' %></label>
-      <input type="text" class="form-control"
-             id="additional_phone"
-             ng-model="witness.additional_phone"
-             is-phone>
-    </div>
-
-    <div class="form-group">
-      <label for="email"><%= t 'users.new.labels.email' %></label>
-      <input type="text" class="form-control"
-             id="email"
-             ng-model="user.email"
-             disabled>
-    </div>
-
-    <hr>
-    <div class="form-group ">
-      <label for="contact_name" >
-        שם איש קשר וקרבה לעד
-      </label>
-      <input type="text" class="form-control"
-             id="contact_name"
-             ng-model="witness.contact_name">
-    </div>
-
-    <div class="form-group ">
-      <label for="contact_phone" >
-        טלפון איש קשר
-      </label>
-      <input type="text" class="form-control"
-             id="contact_phone"
-             ng-model="witness.contact_phone">
-    </div>
-
-
-    <div class="form-row"
-         ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.country.$error.required && stepTwo.city.$invalid]">
-      <div class="col">
-      <label for="country"><%= t 'shared.country' %></label>
-      <select class="form-control" id="country"
-              ng-model="witness.country"
-              name="country"
-              required
-              ng-change="onCountrySelect()"
-              ng-options="c.country_printable_name for c in countries">
-        <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
-      </select>
-</div><div class="col">
-      <label for="city"><%= t '.city' %></label>
-      <select class="form-control" id="country"
-              ng-model="witness.country_region_city"
-              name="country"
-              required
-              ng-options="c.city_name_he for c in witness.country.cities">
-        <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
-      </select>
+  <form name="form" ng-class="{true: 'error'}[submitted]" novalidate ng-hide="witness.archived">
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label for="full_name"><%= t 'users.new.labels.full_name' %></label>
+        <input type="text" class="form-control"
+               id="full_name"
+               ng-model="user.full_name"
+               disabled
+        >
       </div>
-    </div>
 
-    <div class="form-group"
-         ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.address.$invalid]">
-      <label for="address"><%= t '.address' %></label>
-      <input type="text" class="form-control"
-             name="address"
-             id="address"
-             ng-model="witness.address"
-             required>
-    </div>
+      <div class="form-group">
+        <label for="phone"><%= t 'hosts.edit.phone' %></label>
+        <input type="text" class="form-control"
+               id="phone"
+               ng-model="user.phone"
+               disabled>
+      </div>
 
-    <div class="form-group ">
-      <label for="witness_type" >
-        <%= t 'shared.type' %>
-      </label>
-      <select class="form-control" id="witness_type"
-              ng-model="witness.witness_type"
-              ng-options="o.v as o.n for o in typeOptions"
-              required>
-      </select>
-    </div>
+      <div class="form-group">
+        <label for="additional_phone"><%= t 'salons.new.additional_phone' %></label>
+        <input type="text" class="form-control"
+               id="additional_phone"
+               ng-model="witness.additional_phone"
+               is-phone>
+      </div>
 
-    <div class="form-group">
-      <label for="event_language">השפה בה איש העדות מעביר את העדות</label>
-      <div ng-show="!otherLanguageVisible">
-        <select class="form-control" id="event_language"
-                name="event_language"
+      <div class="form-group">
+        <label for="email"><%= t 'users.new.labels.email' %></label>
+        <input type="text" class="form-control"
+               id="email"
+               ng-model="user.email"
+               disabled>
+      </div>
+
+      <hr>
+      <div class="form-group ">
+        <label for="contact_name" >
+          שם איש קשר וקרבה לעד
+        </label>
+        <input type="text" class="form-control"
+               id="contact_name"
+               ng-model="witness.contact_name">
+      </div>
+
+      <div class="form-group ">
+        <label for="contact_phone" >
+          טלפון איש קשר
+        </label>
+        <input type="text" class="form-control"
+               id="contact_phone"
+               ng-model="witness.contact_phone">
+      </div>
+
+
+      <div class="form-row"
+           ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.country.$error.required && stepTwo.city.$invalid]">
+        <div class="col">
+          <label for="country"><%= t 'shared.country' %></label>
+          <select class="form-control" id="country"
+                  ng-model="country"
+                  name="country"
+                  required
+                  ng-change="onCountrySelect()"
+                  ng-options="c.country_printable_name for c in countries">
+            <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
+          </select>
+        </div><div class="col">
+        <label for="city"><%= t '.city' %></label>
+        <select class="form-control" id="country"
+                ng-model="witness.country_region_city"
+                name="country"
                 required
-                ng-model="witness.language" ng-change="languageChanged()">
-          <option ng-show="!witness.language" value=""><%= t 'shared.select' %></option>
-          <option value="hebrew">עברית</option>
-          <option value="english">English</option>
-          <option value="arabic">العربية</option>
-          <option value="french">Français</option>
-          <option value="russian">русский</option>
-          <option value="spanish">Español</option>
-          <option value="other"><%= t 'shared.other' %></option>
+                ng-options="c.city_name_he for c in country.cities">
+          <option ng-show="!witness.country" value=""><%= t 'shared.select' %></option>
+        </select>
+      </div>
+      </div>
+
+      <div class="form-group"
+           ng-class="{true: 'has-error'}[submitted[stepIndex] && stepTwo.address.$invalid]">
+        <label for="address"><%= t '.address' %></label>
+        <input type="text" class="form-control"
+               name="address"
+               id="address"
+               ng-model="witness.address"
+               required>
+      </div>
+
+      <div class="form-group ">
+        <label for="witness_type" >
+          <%= t 'shared.type' %>
+        </label>
+        <select class="form-control" id="witness_type"
+                ng-model="witness.witness_type"
+                ng-options="o.v as o.n for o in typeOptions"
+                required>
         </select>
       </div>
 
-      <input type="text" class="form-control"
-             ng-model="host.event_language"
-             ng-show="otherLanguageVisible" />
+      <div class="form-group">
+        <label for="event_language">השפה בה איש העדות מעביר את העדות</label>
+        <div ng-show="!otherLanguageVisible">
+          <select class="form-control" id="event_language"
+                  name="event_language"
+                  required
+                  ng-model="witness.language" ng-change="languageChanged()">
+            <option ng-show="!witness.language" value=""><%= t 'shared.select' %></option>
+            <option value="hebrew">עברית</option>
+            <option value="english">English</option>
+            <option value="arabic">العربية</option>
+            <option value="french">Français</option>
+            <option value="russian">русский</option>
+            <option value="spanish">Español</option>
+            <option value="other"><%= t 'shared.other' %></option>
+          </select>
+        </div>
+
+        <input type="text" class="form-control"
+               ng-model="host.event_language"
+               ng-show="otherLanguageVisible" />
+      </div>
+
+
     </div>
-
-    <div class="form-group ">
-      <label for="stairs"><%= t '.walk_up_stairs' %></label>
-      <select class="form-control" id="stairs"
-              ng-model="witness.stairs"
-              ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.can' %>', v: true }, { n: '<%= t 'shared.cant' %>', v: false }]">
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="special_needs" class="control-label"><%= t '.special_needs' %></label>
-      <textarea class="form-control" id="special_needs"
-                ng-model="witness.special_needs">
-			</textarea>
-    </div>
-
-    <div class="form-group">
-    <label for="special_population"><%= t '.special_population' %></label>
-    <select class="form-control" id="special_population"
-            ng-model="witness.special_population"
-            ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.yes' %>', v: true }, { n: '<%= t 'shared.no' %>', v: false }]">
-    </select>
-  </div>
-
-    <div class="form-group">
-      <label for="free_text" class="control-label"><%= t '.free_text' %></label>
-        <textarea class="form-control" id="free_text"
-                  ng-model="witness.free_text" style="height: 250px; max-width: 330px;">
-        </textarea>
-    </div>
-
-
-    <button ng-click="submit()" class="btn btn-warning"><%= t 'shared.submit' %></button>
-</div>
-
     <div class="col-xs-4">
-    <div class="form-group">
-      <label for="free_text" class="control-label">פרטי השיחה</label>
+      <div class="form-group">
+        <label for="free_text" class="control-label">פרטי השיחה</label>
       <textarea class="form-control" id="free_text"
                 required
                 ng-model="call_details.free_text" style="height: 100px; max-width: 330px;"
                 placeholder="לאיזה טלפון השיחה נעשתה ועם מי דיברתם ( איש העדות, איש קשר) נא לציין שם ופרטים נוספים חשובים">
 			</textarea>
 
-      <label>
-        <input type="checkbox" ng-model="call_details.no_answer">
-        אין תשובה - להתקשר שוב
-      </label>
+        <label>
+          <input type="checkbox" ng-model="call_details.no_answer">
+          אין תשובה - להתקשר שוב
+        </label>
 
-      <label>
-        <input type="checkbox" ng-model="call_details.phone_error">
-        אין תשובה - מספר טלפון לא נכון, לטיפול מתקדם
-      </label>
+        <label>
+          <input type="checkbox" ng-model="call_details.phone_error">
+          אין תשובה - מספר טלפון לא נכון, לטיפול מתקדם
+        </label>
 
-      <label>
-        <input type="checkbox" ng-model="call_details.not_relevant">
-        לא מעוניין להתארח השנה
-      </label>
+        <label>
+          <input type="checkbox" ng-model="call_details.not_relevant">
+          לא מעוניין להתארח השנה
+        </label>
 
-      <label>
-        <input type="checkbox" ng-model="call_details.archived">
-        לא מעוניין להתארח בעתיד
-      </label>
+        <label>
+          <input type="checkbox" ng-model="call_details.archived">
+          לא מעוניין להתארח בעתיד
+        </label>
+      </div>
+
+      <div ng-hide="call_details.no_answer || call_details.phone_error || call_details.not_relevant || call_details.archived">
+        <label class="control-label"><%= t 'shared.multiple_available_days' %></label>
+        <div class="form-inline">
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day1">
+                <%= t 'shared.available_day1' %>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day2">
+                <%= t 'shared.available_day2' %>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day3">
+                <%= t 'shared.available_day3' %>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day4">
+                <%= t 'shared.available_day4' %>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day5">
+                <%= t 'shared.available_day5' %>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="checkbox checkbox-inline">
+              <label>
+                <input type="checkbox" ng-model="witness_year.available_day6">
+                <%= t 'shared.available_day6' %>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>זמינות (באילו שעות איש העדות פנוי)</label>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="witness_year.can_morning">
+              בוקר
+            </label>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="witness_year.can_afternoon">
+              צהריים
+            </label>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="witness_year.can_evening">
+              ערב
+            </label>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+      <hr />
+
+      <div class="form-inline">
+        <div class="form-group ">
+          <label for="stairs"><%= t '.walk_up_stairs' %></label>
+          <select class="form-control" id="stairs"
+                  ng-model="witness.stairs"
+                  ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.can' %>', v: true }, { n: '<%= t 'shared.cant' %>', v: false }]">
+          </select>
+        </div>
+
+        <div class="form-group ">
+          <label for="stairs">שימוש בכיסא גלגלים</label>
+          <select class="form-control" id="wheelchair"
+                  ng-model="witness.wheelchair"
+                  ng-options="o.v as o.n for o in [{ n: 'לא משתמש', v: 'false'}, { n: 'כיסא רגיל', v: 'regular' }, { n: 'כיסא ממונע', v: 'engine' }]">
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <div class="checkbox checkbox-inline">
+            <label>
+              <input type="checkbox" ng-model="witness.hearing_impairment">
+              לקות שמיעה
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="checkbox checkbox-inline">
+            <label>
+              <input type="checkbox" ng-model="witness.visual_impairment">
+              לקות ראיה
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-group">
+        <label for="special_needs" class="control-label"><%= t '.special_needs' %></label>
+      <textarea class="form-control" id="special_needs"
+                ng-model="witness.special_needs">
+			</textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="special_population"><%= t '.special_population' %></label>
+        <select class="form-control" id="special_population"
+                ng-model="witness.special_population"
+                ng-options="o.v as o.n for o in [{ n: '<%= t 'shared.yes' %>', v: true }, { n: '<%= t 'shared.no' %>', v: false }]">
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="free_text" class="control-label"><%= t '.free_text' %></label>
+        <textarea class="form-control" id="free_text"
+                  ng-model="witness.free_text" style="height: 250px; max-width: 330px;">
+        </textarea>
+      </div>
+
+      <button ng-click="submit()" class="btn btn-warning"><%= t 'shared.submit' %></button>
     </div>
+
+
   </form>
-
-  <div class="col-xs-4" ng-show="witness.archived">
-    העד לא מעוניין להתארח
-    אם ידוע לך אחרת, אנא פנה למנהל
-    </div>
-
-  <div ng-hide="call_details.no_answer || call_details.phone_error || call_details.not_relevant || call_details.archived">
-    <label class="control-label"><%= t 'shared.multiple_available_days' %></label>
-    <div class="form-inline">
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day1">
-            <%= t 'shared.available_day1' %>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day2">
-            <%= t 'shared.available_day2' %>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day3">
-            <%= t 'shared.available_day3' %>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day4">
-            <%= t 'shared.available_day4' %>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day5">
-            <%= t 'shared.available_day5' %>
-          </label>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="checkbox checkbox-inline">
-          <label>
-            <input type="checkbox" ng-model="witness_year.available_day6">
-            <%= t 'shared.available_day6' %>
-          </label>
-        </div>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>זמינות (באילו שעות איש העדות פנוי)</label>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="witness_year.can_morning">
-          בוקר
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="witness_year.can_afternoon">
-          צהריים
-        </label>
-      </div>
-
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" ng-model="witness_year.can_evening">
-          ערב
-        </label>
-      </div>
-
-    </div>
-
-
-
-  </div>
-  </div>
-
 
   <div class="col-xs-4">
     הערות צוות

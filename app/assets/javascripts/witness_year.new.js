@@ -33,10 +33,10 @@ app.controller('WitnessYearNewController', ['$scope','$http','$timeout', functio
         $scope.countries = countries;
         $scope.witness = witness;
 
-        $scope.witness_year = witness_year;
+        $scope.witness_year = witness_year || {};
 
         $scope.user = witness.user;
-        $scope.witness.country = $scope.countries.filter(function(country) {return country.country_numcode == $scope.witness.country_region_city.country_numcode})[0];
+        $scope.country = $scope.countries.filter(function(country) {return country.country_numcode == $scope.witness.country_region_city.country_numcode})[0];
         $scope.witness.country_region_city = $scope.witness.country.cities.filter(function(city) {return city.city_id == $scope.witness.country_region_city.id})[0];
 	}
 

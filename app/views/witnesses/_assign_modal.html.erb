@@ -76,7 +76,19 @@
 		  			<div class="info-group">
 		  				<span class="label"><%= t 'shared.accessibility' %>:</span>
 		  				<span class="value">{{ formatStairs(witness.stairs) }}</span>
-		  			</div>
+            </div>
+            <div class="info-group">
+              <span class="label"><%= t 'shared.wheelchair' %>:</span>
+              <span class="value"> {{witness.wheelchair}}</span>
+            </div>
+            <div class="info-group">
+              <span class="label"><%= t 'shared.hearing_impairment' %>:</span>
+              <span class="value"> {{formatBool(witness.hearing_impairment)}}</span>
+            </div>
+            <div class="info-group">
+              <span class="label"><%= t 'shared.visual_impairment' %>:</span>
+		  				<span class="value"> {{formatBool(witness.visual_impairment)}}</span>
+            </div>
 
 		  			<div class="info-group">
 		  				<span class="label">זמין בשעה:</span>

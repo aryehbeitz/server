@@ -12,4 +12,10 @@ class Witness < ApplicationRecord
   def comments
     Comment.get_all_json(self.id, 'witnesses')
   end
+
+  def self.witness_params(params)
+    params.require(:witness).permit(:address, :can_morning, :can_afternoon, :can_evening, :free_on_day, :special_population,
+                                    :contact_name, :witness_type, :language, :contact_phone, :stairs, :wheelchair, :hearing_impairment,
+                                    :visual_impairment)
+  end
 end

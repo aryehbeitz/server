@@ -1,5 +1,6 @@
 
 def save_or_get(user)
+  user.email = user.email.downcase if user.email
   u = User.exist?(user.email, user.phone)
   return u if !u.nil?
   user.save!
@@ -35,6 +36,7 @@ def insert_comment(row, witness, comments)
   return if comments[row['id']].nil?
   comments[row['id']].each do |comment|
     comment['entity_id'] = witness.id
+    comment['entity_type'] = "witnesses"
     puts comment
     Comment.new(comment).save!
   end

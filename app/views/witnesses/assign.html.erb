@@ -67,6 +67,18 @@
             <div class="info-label"><%= t 'witnesses.new.walk_up_stairs' %></div>
             <div>{{ formatBool(witness.stairs) }}</div>
           </div>
+          <div class="field-group">
+            <div class="info-label"><%= t 'witnesses.new.wheelchair' %></div>
+            <div>{{ witness.wheelchair }}</div>
+          </div>
+          <div class="field-group">
+            <div class="info-label"><%= t 'witnesses.new.hearing_impairment' %></div>
+            <div>{{ formatBool(witness.hearing_impairment) }}</div>
+          </div>
+          <div class="field-group">
+            <div class="info-label"><%= t 'witnesses.new.visual_impairment' %></div>
+            <div>{{ formatBool(witness.visual_impairment) }}</div>
+          </div>
         </div>
 
         <div class="panel-body">

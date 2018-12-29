@@ -41,6 +41,9 @@ class WitnessYearsController < ApplicationController
 
     @witness_year.update_attributes(witness_year_params) if params[:witness_year].present?
 
+
+    @witness.update_attributes(Witness.witness_params(params)) if params[:witness].present?
+
     begin
     ActiveRecord::Base.transaction do
       @witness_year.save!

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_18_220512) do
+ActiveRecord::Schema.define(version: 2018_12_25_085356) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,9 @@ ActiveRecord::Schema.define(version: 2018_11_18_220512) do
     t.string "free_text"
     t.string "additional_phone"
     t.boolean "archived"
+    t.string "wheelchair", default: "false"
+    t.boolean "hearing_impairment"
+    t.boolean "visual_impairment"
   end
 
 end

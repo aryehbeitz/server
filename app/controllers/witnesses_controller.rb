@@ -59,7 +59,7 @@ class WitnessesController < ApplicationController
   # PATCH/PUT /witnesses/1.json
   def update
     respond_to do |format|
-      if @witness.update(witness_params)
+      if @witness.update(Witness.witness_params(params))
         format.html { redirect_to @witness, notice: 'Witness was successfully updated.' }
         format.json { render :show, status: :ok, location: @witness }
       else
@@ -101,12 +101,5 @@ class WitnessesController < ApplicationController
     def set_witness
       @witness = Witness.find(params[:id])
       redirect_to witnesses_url if @witness.nil?
-    end
-
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def witness_params
-      params.require(:witness).permit(:address, :can_morning, :can_afternoon, :can_evening, :free_on_day, :special_population,
-                                      :available_day1, :available_day2, :available_day3, :available_day4, :available_day5, :available_day6,
-                                      :available_day7, :contact_name, :witness_type, :language, :contact_phone, :stairs)
     end
 end

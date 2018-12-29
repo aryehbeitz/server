@@ -154,6 +154,11 @@ he:
     region: "אזור"
     mailer_pargraph_noticed_profile_login: "*כדי לראות את הפרופיל שלך, יש לשים לב כי התחברת לאתר. במידה ואין את המילה ״הפרופיל שלי״ מצד ימין למעלה, יש ללחוץ על ״התחבר/י״ מצד שמאל למעלה."
     witness_contacted_red: "אדומים"
+    wheelchair: "כיסא גלגלים"
+    hearing_impairment: "לקות שמיעה"
+    visual_impairment: "לקות ראיה"
+
+
 
   views:
     pagination:
@@ -313,6 +318,9 @@ he:
       seminar_required: "צריך סמינר"
       inside_text: "אנחנו רוצים להכיר את איש העדות טוב יותר, ועל כן נבקש למלא כמה שיותר פרטים כלליים"
       special_population: "מעוניין לדבר מול אוכלוסיות מיוחדות?"
+      wheelchair: "כיסא גלגלים"
+      hearing_impairment: "לקות שמיעה"
+      visual_impairment: "לקות ראיה"
     show:
       title: "פרופיל איש עדות"
       manager_actions: "ניהול שנתי"
