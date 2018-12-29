@@ -2,6 +2,14 @@
 
 app.controller('WitnessYearNewController', ['$scope','$http','$timeout', function($scope, $http, $timeout) {
 
+    window.onbeforeunload= function(e) {
+        if (true) {
+            e.preventDefault();
+            e.returnValue = "Are you sure you want to navigate away from this page"
+            return "Are you sure you want to navigate away from this page"
+        }
+    };
+
 	$scope.witness = {
 		can_morning: true,
 		can_afternoon: true,
@@ -36,8 +44,10 @@ app.controller('WitnessYearNewController', ['$scope','$http','$timeout', functio
         $scope.witness_year = witness_year || {};
 
         $scope.user = witness.user;
-        $scope.country = $scope.countries.filter(function(country) {return country.country_numcode == $scope.witness.country_region_city.country_numcode})[0];
-        $scope.witness.country_region_city = $scope.witness.country.cities.filter(function(city) {return city.city_id == $scope.witness.country_region_city.id})[0];
+        if ($scope.witness.country_region_city) {
+            $scope.country = $scope.countries.filter(function(country) {return country.country_numcode == $scope.witness.country_region_city.country_numcode})[0];
+            $scope.witness.country_region_city = $scope.witness.country.cities.filter(function(city) {return city.city_id == $scope.witness.country_region_city.id})[0];
+        }
 	}
 
 	$scope.submit = function() {
