@@ -403,11 +403,20 @@
               </td>
             <td>
                 {{formatBool(witness.witness_year != undefined)}}
-                {{witness.witness_year && !witness.witness_year.first_staff_contacted ? ' - נדרשת שיחה נוספת': ''}}
+                {{witness.witness_year && !witness.witness_year.first_staff_contacted && witness.witness_year.last_call == undefined ? ' - נדרשת שיחה נוספת': ''}}
+                {{witness.witness_year && witness.witness_year.last_call ? 'נדרשת התערבות מנהל' : '' }}
             </td>
               <td>
-                <a href="/<%= Year.current_year %>/witnesses/{{witness.id}}/witness_years/{{witness.witness_year.id}}" ng-click="$event.stopPropagation();" class="btn btn-link">שימור</a>
-                <a href="/witnesses/{{witness.id}}/assign" ng-class="{'disabled': !(witness.witness_year && witness.witness_year.first_staff_contacted)}" ng-click="$event.stopPropagation();" class="btn btn-link">שיבוץ</a>
+                <a href="/<%= Year.current_year %>/witnesses/{{witness.id}}/witness_years/{{witness.witness_year.id}}" ng-click="$event.stopPropagation();" class="btn btn-link">
+                  <span ng-if="!(witness.witness_year && witness.witness_year.first_staff_contacted)">
+                                    שימור
+                  </span>
+                  <span ng-if="witness.witness_year && (witness.witness_year.first_staff_contacted)">
+עדכון
+                  </span>
+
+                </a>
+                <a href="/witnesses/{{witness.id}}/assign" ng-class="{'disabled': !(witness.witness_year && witness.witness_year.first_staff_contacted && witness.witness_year.last_call == undefined)}" ng-click="$event.stopPropagation();" class="btn btn-link">שיבוץ</a>
                 <button ng-click="addManager(witness);$event.stopPropagation();" class="btn btn-info">הוסף מוביל</button>
                 <button ng-click="deleteWitness(witness);$event.stopPropagation();" class="btn btn-danger">מחק/י</button>
               </td>

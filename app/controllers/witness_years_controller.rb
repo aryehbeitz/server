@@ -13,31 +13,38 @@ class WitnessYearsController < ApplicationController
   # POST /witness_years.json
   def create_or_update
     @witness_year = WitnessYear.where(id: params[:witness_year][:id], year: Year.current_year).first if params[:witness_year].present?
-    @witness_year ||= WitnessYear.new(year: Year.current_year, witness: @witness, first_staff_contacted: true)
+    @witness_year ||= WitnessYear.new(year: Year.current_year, witness: @witness, first_staff_contacted: true, last_call: nil)
 
     @comment = Comment.new(entity_type: 'witnesses', entity_id: @witness.id, user: current_user)
     @comment.content = "פרטי השיחה: #{params[:call_details][:free_text]}"
 
-    @comment.content = @comment.content + " אין תשובה - להתקשר שוב"if params[:call_details][:no_answer]
-    @comment.content = @comment.content + " אין תשובה - מספר טלפון לא תקין" if params[:call_details][:phone_error]
-    @comment.content = @comment.content + " לא מעוניין להתארח בעתיד" if params[:call_details][:archived]
-    @comment.content = @comment.content + "לא מעוניין להתארח השנה" if params[:call_details][:not_relevant]
-
     if params[:call_details][:no_answer]
+    @comment.content = @comment.content + " אין תשובה - להתקשר שוב"
+    @witness_year.last_call = "no_answer"
+    @witness_year.first_staff_contacted = false
+    end
+
+    if params[:call_details][:phone_error]
+    @comment.content = @comment.content + " אין תשובה - מספר טלפון לא תקין"
+    @witness_year.last_call = "phone_error"
+    ManagerMailer.witness_contact_help(@witness, "phone_error").deliver
+    end
+
+    if params[:call_details][:archived]
+    @comment.content = @comment.content + " לא מעוניין להתארח בעתיד"
+    @witness_year.last_call = "archived"
+    ManagerMailer.witness_contact_help(@witness, "archived").deliver
+    end
+
+    if params[:call_details][:not_relevant]
+    @comment.content = @comment.content + "לא מעוניין להתארח השנה"
+    @witness_year.last_call = "not_relevant"
+    end
+
+    if witness_year_params.select{ |param| witness_year_params[param] == true}.empty?
       @witness_year.first_staff_contacted = false
+      @witness_year.last_call = "no_availability"
     end
-
-    if params[:call_details][:phone_error] or params[:call_details][:archived]
-      if params[:call_details][:phone_error]
-        type = 'phone_error'
-      else
-        type = 'archived'
-      end
-      ManagerMailer.witness_contact_help(@witness, type).deliver
-    end
-
-
-    #send email
 
     @witness_year.update_attributes(witness_year_params) if params[:witness_year].present?
 
