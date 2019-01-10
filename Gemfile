@@ -7,6 +7,8 @@ ruby '2.4.2'
 gem 'rails', '~> 5.2.1'
 
 gem 'devise'
+gem 'devise_invitable', '~> 1.7.0'
+
 gem 'will_paginate'
 gem 'simple_form'
 gem 'compass-rails', github: 'Compass/compass-rails'

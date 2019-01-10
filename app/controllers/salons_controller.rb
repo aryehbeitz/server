@@ -49,7 +49,7 @@ class SalonsController < ApplicationController
     @salon.user_id = current_user.id
     @salon.save
     @countries = CountryRegionCity.get_cities_by_country
-    HostMailer.new_host(@salon, I18n.locale).deliver
+    #HostMailer.new_host(@salon, I18n.locale).deliver
   end
 
   # GET /salons/1/edit

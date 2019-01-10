@@ -537,3 +537,11 @@ he:
     show:
       add_city_title: "הוספת עיר לאזור"
       edit_city_list: "עריכת רשימת ערים"
+
+
+  time:
+    formats:
+      devise:
+        mailer:
+          invitation_instructions:
+            accept_until_format: "%B %d, %Y %I:%M %p"

@@ -15,7 +15,9 @@
       <%= link_to(t('.managers'), staff_url(current_user.id), class: 'header-link') if current_user.staff? %>
 
       <!-- New Admin link - Area Management -->
-      <%= link_to(t('.region_managememnt'), staffs_path, class: 'header-link') if current_user.admin? %>
+      <%= link_to(t('.region_managememnt'),   staffs_path, class: 'header-link') if current_user.admin? %>
+
+      <%= link_to('הוספת מוביל', '/new_staff', class: 'header-link') if current_user.admin? %>
 
       <!-- Non signed in user -->
     <% else %>

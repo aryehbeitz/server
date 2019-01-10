@@ -1,6 +1,10 @@
 class Staff < ApplicationRecord
   belongs_to :user
 
+  def self.create(email, phone, full_name, invited_by)
+    User.invite!({:email => email, :phone => phone, :full_name=>full_name})
+  end
+
   def self.salons(current_user)
     if current_user.admin?
       Salon.all

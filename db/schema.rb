@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_04_110650) do
+ActiveRecord::Schema.define(version: 2019_01_04_151945) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,7 +102,20 @@ ActiveRecord::Schema.define(version: 2019_01_04_110650) do
     t.datetime "updated_at", null: false
     t.string "phone"
     t.string "full_name"
+    t.string "invitation_token"
+    t.datetime "invitation_created_at"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
+    t.integer "invitation_limit"
+    t.string "invited_by_type"
+    t.bigint "invited_by_id"
+    t.integer "invitations_count", default: 0
     t.index ["email"], name: "index_users_on_email"
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
+    t.index ["invitations_count"], name: "index_users_on_invitations_count"
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["invited_by_type", "invited_by_id"], name: "index_users_on_invited_by_type_and_invited_by_id"
+    t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -137,18 +150,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_110650) do
     t.integer "user_id"
     t.integer "country_region_city_id"
     t.string "address"
-    t.boolean "can_morning"
-    t.boolean "can_afternoon"
-    t.boolean "can_evening"
-    t.boolean "free_on_day"
     t.boolean "special_population"
-    t.boolean "available_day1"
-    t.boolean "available_day2"
-    t.boolean "available_day3"
-    t.boolean "available_day4"
-    t.boolean "available_day5"
-    t.boolean "available_day6"
-    t.boolean "available_day7"
     t.string "contact_name"
     t.string "contact_phone"
     t.string "witness_type"

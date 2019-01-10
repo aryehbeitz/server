@@ -1,0 +1,12 @@
+<h2>הגדר סיסמה</h2>
+
+<%= simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f| %>
+  <%= devise_error_messages! %>
+  <%= f.hidden_field :invitation_token %>
+
+  <%= f.input :full_name %>
+  <%= f.input :password, maxlength: 12 %>
+  <%= f.input :password_confirmation %>
+
+  <%= f.button :submit, 'שמור סיסמה' %>
+<% end %>

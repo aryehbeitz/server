@@ -40,6 +40,7 @@
 //= require witnesses.new
 //= require sessions.new
 //= require managers.index
+//= require managers.new
 //= require witnesses.show
 //= require witnesses.assign
 //= require witness_year.new

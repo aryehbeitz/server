@@ -1,0 +1,20 @@
+<div class="col-xs-12" id="new-staff" ng-controller="StaffNewController"
+     ng-init="init()"> <!-- <= @countries.to_json %>-->
+
+<form class="form-inline" ng-submit="createManager()">
+  <div class="form-group">
+    <label for="full_name">שם מלא</label>
+    <input type="text" class="form-control" id="full_name" ng-model="full_name" placeholder="שם מלא" required />
+  </div>
+    <div class="form-group">
+        <label for="email">מייל</label>
+        <input type="text" class="form-control" id="email" ng-model="email" placeholder="מייל" required />
+    </div>
+    <div class="form-group">
+        <label for="phone">טלפון</label>
+        <input type="text" class="form-control" id="phone" ng-model="phone" placeholder="טלפון" required />
+    </div>
+    <button type="submit" class="btn btn-default">הוסף מוביל</button>
+</form>
+  <span>{{response}}</span>
+    </div>

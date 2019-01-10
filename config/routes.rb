@@ -4,7 +4,12 @@ Rails.application.routes.draw do
   scope '(:year)', year: /2019|2018|2017|2016|2015/  do
   resources :country_region_cities
 
-  resources :staffs
+  resources :staffs do
+
+  end
+
+  get '/new_staff' , :to => 'staffs#new_staff_page'
+  post '/new_staff.json' , :to => 'staffs#new_staff'
 
   resources :witnesses do
     get :assign, on: :member

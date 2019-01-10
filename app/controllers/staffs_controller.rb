@@ -1,11 +1,27 @@
 class StaffsController < ApplicationController
   before_action :set_staff, only: [:show, :update, :destroy]
   before_action :is_staff
-  before_action :is_admin, only: [:index, :destroy, :update]
+  before_action :is_admin, only: [:index, :destroy, :update, :new_staff_page, :new_staff]
 
   def is_admin
     redirect_to root_path unless current_user && (current_user.admin?)
   end
+
+  # GET /new_staff
+  def new_staff_page
+    #@countries = CountryRegionCity.get_all_with_staff
+  end
+
+  # POST /new_staff.json
+  def new_staff
+    user_params = params.require(:user).permit(:email, :phone, :full_name)
+    user = User.exist?(user_params[:email], user_params[:phone])
+    user ||= Staff.create(user_params[:email], user_params[:phone], user_params[:full_name], 0)
+
+    Staff.new(user_id: user.id, entity_type: "new").save!
+    render json: {info: "OK"}
+  end
+
 
 
   # GET /staffs
@@ -60,12 +76,13 @@ class StaffsController < ApplicationController
   # POST /staffs.json
   def create
     if !Staff.is_manager_of_entity(current_user, params[:staff][:entity_type], params[:staff][:entity_id])
+      head :forbidden
       return
     end
 
     if params[:staff][:email]
       user = User.where(email: params[:staff][:email]).first
-      return unless user
+      user = user || Staff.create(email: params[:staff][:email]).user
       params[:staff][:user_id] = user.id
     end
 
