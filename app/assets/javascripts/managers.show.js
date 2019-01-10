@@ -345,16 +345,16 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
 
 }]);
 
-app.controller('AddManagerToWitnessModal', function($scope, $uibModalInstance, witness, managers){
+app.controller('AddManagerToWitnessModal', ['$scope','$uibModal', function($scope, $uibModalInstance, witness, managers){
     $scope.witness = witness;
     $scope.managers = managers;
 
     $scope.select = function(manager) {
         $uibModalInstance.close(manager);
-    }
+    };
 
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
-    }
+    };
 
-})
+}]);
