@@ -36,7 +36,6 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         $scope.currentUser = currentUser;
         $scope.hosts = salons;
         $scope.witnesses = witnesses;
-        console.log(witnesses);
         $scope.countries = countries;
         $scope.totalHosts = salons.length;
         $scope.totalWitnesses = totalWitnesses;
@@ -289,9 +288,7 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         var res = confirm("בטוח בטוח?");
         if (res) {
             $http.delete('/' + document.getElementById('locale').className + '/'+ document.getElementById('year').className + '/staffs/' + manager.id + '.json').then(function (response) {
-                if (response.data.success) {
-                    $scope.showSuccessMessage();
-                }
+                filter(1);
             });
         }
     };
@@ -319,11 +316,8 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
             controller: 'AddManagerToWitnessModal',
             backdrop: false,
             resolve: {
-                witness: function () {
-                    return witness;
-                },
                 managers: function () {
-                    return $scope.managers
+                    return $scope.managers;
                 }
             }
         });
@@ -337,6 +331,7 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
 
                 }
             }).then(function (response) {
+                filter(1);
             }, function () {
                 alert('error');
             });
@@ -345,8 +340,7 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
 
 }]);
 
-app.controller('AddManagerToWitnessModal', ['$scope','$uibModal', function($scope, $uibModalInstance, witness, managers){
-    $scope.witness = witness;
+app.controller('AddManagerToWitnessModal', ['$scope','$uibModalInstance','managers',  function($scope, $uibModalInstance, managers){
     $scope.managers = managers;
 
     $scope.select = function(manager) {
