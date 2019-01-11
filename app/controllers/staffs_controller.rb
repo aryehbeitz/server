@@ -18,8 +18,14 @@ class StaffsController < ApplicationController
     user = User.exist?(user_params[:email], user_params[:phone])
     user ||= Staff.create(user_params[:email], user_params[:phone], user_params[:full_name], 0)
 
-    Staff.new(user_id: user.id, entity_type: "new").save!
-    render json: {info: "OK"}
+    if Staff.where(user_id: user.id).count == 0
+      Staff.new(user_id: user.id, entity_type: "new").save!
+      render json: {result: "OK"}
+    else
+      render json: {result: "exist"}
+    end
+
+
   end
 
 
