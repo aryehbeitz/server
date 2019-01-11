@@ -29,14 +29,19 @@ class Staff < ApplicationRecord
 
       places = CountryRegionCity.where(country_numcode: countries).or(CountryRegionCity.where(region_id: region)).or(CountryRegionCity.where(id: cites)).pluck(:id)
 
-      Witness.where(country_region_city_id: places)
+      ids = direct_manager_witness_ids(current_user)
+      Witness.where(country_region_city_id: places).or(Witness.where(id: ids))
     end
   end
 
-  def self.direct_manager_witness(current_user)
-    direct = Staff.where(user_id: current_user.id, entity_type: 'witness').pluck(:entity_id)
+  def self.direct_manager_witness_ids(current_user)
+    Staff.where(user_id: current_user.id, entity_type: 'witness').pluck(:entity_id)
+  end
 
-    Witness.where(id: direct)
+  def self.direct_manager_witness(current_user)
+    ids = direct_manager_witness_ids(current_user)
+
+    Witness.where(id: ids)
   end
 
   def self.manage_salon?(current_user, salon)
