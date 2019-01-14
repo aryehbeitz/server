@@ -113,7 +113,8 @@ app.controller('ManagerShowController', ['$scope','$uibModal', '$http', '$locati
         }
 
         if ($scope.search.city) {
-            $scope.search.witness.country_region_city_id = $scope.search.city.id;
+            console.log($scope.search.city.city_id);
+            $scope.search.witness.country_region_city_id = $scope.search.city.city_id;
             $scope.country_numcode = undefined;
         } else if ($scope.search.country) {
             $scope.country_numcode = $scope.search.country.country_numcode;

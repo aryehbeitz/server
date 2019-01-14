@@ -209,7 +209,7 @@
             <td>{{ host.user.id }}</td>
             <td>{{ host.user.name }}</td>
             <td>{{ host.user.phone }}</td>
-            <td>{{ host.country_region_city.city_name }}</td>
+            <td>{{ host.country_region_city }}</td>
             <td>{{ formatDate(host.event_date) }}</td>
             <td>{{ host.org_name }}</td>
             <td>{{ formatBool(!host.hosted_before) }}</td>
@@ -268,7 +268,7 @@
 
         <div class="form-group">
           <select class="form-control" ng-model="search.city"
-                  ng-options="o.city_name_he for o in search.country.cities">
+                  ng-options="o.city_name_he for o in search.country.cities | orderBy:'city_name_he'">
             <option value=""><%= t 'shared.city' %></option>
           </select>
         </div>
@@ -392,7 +392,7 @@
               ng-click="editWitness(witness)">
             <td>{{ witness.id }}</td>
             <td>{{ witness.user.full_name }}</td>
-            <td>{{ witness.country_region_city.city_name }}</td>
+            <td>{{ witness.country_region_city.city_name_he }}</td>
             <td>{{ formatWitnessType(witness.witness_type) }}</td>
               <td>
                 <div ng-repeat="manager in witness.direct_manager_json">

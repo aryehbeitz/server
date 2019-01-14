@@ -69,7 +69,7 @@ class StaffsController < ApplicationController
 
   def witness_filter
     filter = params[:filter].try(:[], :witness)
-    filter.permit(:witness_type, :stairs, :special_population, :language) if filter
+    filter.permit(:witness_type, :stairs, :special_population, :language, :country_region_city_id) if filter
   end
 
   def witness_year_filter

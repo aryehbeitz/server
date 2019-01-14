@@ -80,7 +80,7 @@
                   ng-model="host.country_region_city"
                   name="country"
                   required
-                  ng-options="c.city_name_en for c in host.country.cities">
+                  ng-options="c.city_name_he for c in host.country.cities | orderBy:'city_name_he'">
             <option ng-show="!host.country" value=""><%= t 'shared.select' %></option>
           </select>
         </div>
